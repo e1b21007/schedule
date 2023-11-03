@@ -12,9 +12,9 @@
   <div>
     <form th:action="@{/postin(id=${XXXX.id})}" method="post">
       <input type="number" name="month" th:value="${XXXX.month}" />月
-      <input type="number" name="day" th:value="${XXXX.day}" />日　タイトル
-      <input type="text" name="title" th:value="${XXXX.title}" />メモ
-      <input type="text" name="memo" th:value="${XXXX.memo}" />
+      <input type="number" name="day" th:value="${XXXX.day}" />日
+      <input type="text" name="title" th:value="${XXXX.title}" />タイトル
+      <input type="text" name="memo" th:value="${XXXX.memo}" />メモ
       <input type="submit" value="入力">
     </form>
   </div>
