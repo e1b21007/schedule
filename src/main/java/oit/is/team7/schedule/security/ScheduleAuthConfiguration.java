@@ -18,7 +18,7 @@ public class ScheduleAuthConfiguration {
     http.formLogin(login -> login.permitAll())
         .logout(logout -> logout.logoutUrl("/logout")
             .logoutSuccessUrl("/"))
-        .authorizeHttpRequests(authz -> authz.requestMatchers(AntPathRequestMatcher.antMatcher("/calendar/**"))
+        .authorizeHttpRequests(authz -> authz.requestMatchers(AntPathRequestMatcher.antMatcher("/none/**"))
             .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll())
         .csrf(csrf -> csrf
             .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/*")))
