@@ -1,3 +1,5 @@
+package oit.is.team7.schedule.model;
+
 public class entry {
     private int userid;
     private int groupid;

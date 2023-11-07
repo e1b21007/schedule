@@ -1,3 +1,5 @@
+package oit.is.team7.schedule.model;
+
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Insert;
@@ -7,4 +9,5 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface suserMapper {
+
 }
