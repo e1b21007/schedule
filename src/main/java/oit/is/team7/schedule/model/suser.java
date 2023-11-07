@@ -1,3 +1,5 @@
+package oit.is.team7.schedule.model;
+
 public class suser {
     private int userid;
     private String username;
