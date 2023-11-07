@@ -3,11 +3,41 @@
 
 <head>
   <meta charset="utf-8">
-  <title>calendar</title>
+  <title>Schedule</title>
 </head>
 
 <body>
-  <p>hi</p>
+  <!-- <h1>Authorized! <span sec:authentication="name"></span>
+  </h1> -->
+  <!-- <a href="/logout">ログアウト</a> -->
+  <div>
+    <!-- <form th:action="@{/postin(id=${XXXX.id})}" method="post">
+      <input type="number" name="month" th:value="${XXXX.month}" />月
+      <input type="number" name="day" th:value="${XXXX.day}" />日
+      <input type="text" name="title" th:value="${XXXX.title}" />タイトル
+      <input type="text" name="memo" th:value="${XXXX.memo}" />メモ
+      <input type="submit" value="入力">
+    </form>
+  </div>
+  <p>予定一覧</p>
+  <div th:if="${XXXX}">
+    <table border="1">
+      <thead>
+        <th>日付</th>
+        <th>タイトル</th>
+      </thead> -->
+    <!--CUSTOMERロールがある場合のみ表示される-->
+    <!-- <tbody sec:authorize="hasRole('ROLE_CUSTOMER')"> -->
+
+    <!-- <tr th:each="plan,stat:${XXXX}">
+        <td>[[${plan.month}]]月[[${plan.day}]]日</td>
+        <td>[[${plan.title}]]</td>
+        <td><a th:href="@{/post(id=${plan.id})}">詳細</a></td>
+      </tr> -->
+    <!-- </tbody> -->
+    <!-- </table> -->
+    <a href="/post?id=1">post</a>
+  </div>
 </body>
 
 </html>
