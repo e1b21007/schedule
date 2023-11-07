@@ -13,4 +13,9 @@ public class schedule_controller {
   public String calendar() {
     return "calendar.html";
   }
+
+  @GetMapping("/home")
+  public String home() {
+    return "home.html";
+  }
 }
