@@ -14,7 +14,7 @@ INSERT INTO Entry (userid,Groupid) VALUES (2,3);
 INSERT INTO Entry (userid,Groupid) VALUES (3,3);
 INSERT INTO Entry (userid,Groupid) VALUES (4,4);
 
-INSERT INTO GroupSchedule (hizuke,Groupid,title,content) VALUES ('2023-08-10',1,'タイトルA','本文1');
-INSERT INTO GroupSchedule (hizuke,Groupid,title,content) VALUES ('2023-08-10',2,'タイトルB','本文2');
-INSERT INTO GroupSchedule (hizuke,Groupid,title,content) VALUES ('2023-08-15',3,'タイトルC','本文3');
-INSERT INTO GroupSchedule (hizuke,Groupid,title,content) VALUES ('2023-08-10',1,'タイトルD','本文4');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-10','10:30','12:30',1,'タイトルA','本文1');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-10','10:30','12:30',2,'タイトルB','本文2');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-15','10:30','12:30',3,'タイトルC','本文3');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-10','13:30','15:30',1,'タイトルD','本文4');
