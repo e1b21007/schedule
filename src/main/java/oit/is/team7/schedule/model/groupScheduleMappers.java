@@ -40,6 +40,42 @@ public interface groupScheduleMappers {
   groupSchedule getgroupScheduleByScheduleid(int scheduleid);
 
     /**
+   * scheduleidから日付を取得する
+   *
+   * @param scheduleid int スケジュールid
+   * @return String hizuke 日付
+   */
+  @Select("SELECT hizuke FROM groupSchedule WHERE Scheduleid = #{scheduleid}")
+  String getHizukeByScheduleid(int scheduleid);
+
+    /**
+   * scheduleidからtitleを取得する
+   *
+   * @param scheduleid int スケジュールid
+   * @return String title タイトル
+   */
+  @Select("SELECT title FROM groupSchedule WHERE Scheduleid = #{scheduleid}")
+  String getTitleByScheduleid(int scheduleid);
+
+    /**
+   * scheduleidから開始時刻を取得する
+   *
+   * @param scheduleid int スケジュールid
+   * @return String kaisi 開始時刻
+   */
+  @Select("SELECT kaisi FROM groupSchedule WHERE Scheduleid = #{scheduleid}")
+  String getKaisiByScheduleid(int scheduleid);
+
+    /**
+   * scheduleidから終了時刻を取得する
+   *
+   * @param scheduleid int スケジュールid
+   * @return String owari 終了時刻
+   */
+  @Select("SELECT owari FROM groupSchedule WHERE Scheduleid = #{scheduleid}")
+  String getOwariByScheduleid(int scheduleid);
+
+    /**
    * scheduleidから本文を修正する
    *
    * @param scheduleid int スケジュールid
@@ -92,7 +128,7 @@ public interface groupScheduleMappers {
   /**
    *groupScheduleのインサート文
    *
-   * @param groupSchedule 作成済みのgroupSchedule
+   * @param groupSchedule groupSchedule 作成済みのgroupSchedule
    * @return void
    */
   @Insert("INSERT INTO groupSchedule (hizuke, kaisi, owari, groupid,title,content) VALUES (#{hizuke}, #{kaisi}, #{owari}, #{groupid},#{title},#{content});")
