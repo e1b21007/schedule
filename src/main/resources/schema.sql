@@ -19,6 +19,8 @@ CREATE TABLE Entry (
 CREATE TABLE GroupSchedule (
     Scheduleid IDENTITY,
     hizuke DATE NOT NULL,
+    kaisi TIME NOT NULL,
+    owari TIME NOT NULL,
     Groupid int,
     title VARCHAR NOT NULL,
     content VARCHAR NOT NULL,

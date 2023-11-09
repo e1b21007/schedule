@@ -3,6 +3,8 @@ package oit.is.team7.schedule.model;
 public class groupSchedule {
     private int scheduleid;
     private String hizuke;
+    private String kaisi;
+    private String owari;
     private int groupid;
     private String title;
     private String content;
@@ -45,6 +47,22 @@ public class groupSchedule {
 
     public void setContent(String name) {
         this.content = name;
+    }
+
+    public String getKaisi() {
+      return kaisi;
+    }
+
+    public void setKaisi(String kaisi) {
+      this.kaisi = kaisi;
+    }
+
+    public String getOwari() {
+      return owari;
+    }
+
+    public void setOwari(String owari) {
+      this.owari = owari;
     }
 
 }
