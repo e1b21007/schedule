@@ -13,7 +13,7 @@ public interface EntryMapper {
      * @return ArrayList<entry> groupid-useridのリスト
      */
     @Select("SELECT USERID, GROUPID FROM ENTRY WHERE GROUPID = #{groupid}")
-    ArrayList<Entry> getEntryByGroupid(int groupid);
+    ArrayList<Entry> selectEntryByGroupid(int groupid);
 
     /**
      * useridからentryTableを取得する
@@ -21,6 +21,6 @@ public interface EntryMapper {
      * @return ArrayList<entry> groupid-useridのリスト
      */
     @Select("SELECT USERID, GROUPID FROM ENTRY WHERE USERID = #{userid}")
-    ArrayList<Entry> getEntryByUserid(int userid);
+    ArrayList<Entry> selectEntryByUserid(int userid);
 
 }
