@@ -18,8 +18,10 @@ public class ScheduleAuthConfiguration {
     http.formLogin(login -> login.permitAll())
         .logout(logout -> logout.logoutUrl("/logout")
             .logoutSuccessUrl("/"))
-        .authorizeHttpRequests(authz -> authz.requestMatchers(AntPathRequestMatcher.antMatcher("/index.html/**"))
-            .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll())
+        .authorizeHttpRequests(authz -> authz.requestMatchers(AntPathRequestMatcher.antMatcher("/home"))
+                .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/calendar"))
+                .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/post"))
+                .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll())
         .csrf(csrf -> csrf
             .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/*")))
         .headers(headers -> headers

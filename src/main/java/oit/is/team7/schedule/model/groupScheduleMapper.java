@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 @Mapper
-public interface groupScheduleMappers {
+public interface groupScheduleMapper {
 
   /**
    * groupidからscheduleidを取得する
@@ -18,7 +18,7 @@ public interface groupScheduleMappers {
    * @return ArrayList<Integer> scheduleidのリスト
    */
   @Select("SELECT scheduleid FROM groupSchedule WHERE GROUPID = #{groupid}")
-  ArrayList<Integer> getgroupScheduleidByGroupid(int groupid);
+  ArrayList<Integer> selectgroupScheduleidByGroupid(int groupid);
 
   /**
    * groupidとhizukeからscheduleidを取得する
@@ -126,13 +126,17 @@ public interface groupScheduleMappers {
   void UpdateOwaribyScheduleid(int scheduleid, String owari);
 
   /**
-   *groupScheduleのインサート文
+   * groupScheduleのインサート文
    *
-   * @param groupSchedule groupSchedule 作成済みのgroupSchedule
-   * @return void
+   * @param hizuke  String 予定の日付
+   * @param kaisi   String 予定の開始時刻
+   * @param owari   String 予定の終了時刻
+   * @param groupid int グループID
+   * @param title   String タイトル
+   * @param content String 本文
    */
   @Insert("INSERT INTO groupSchedule (hizuke, kaisi, owari, groupid,title,content) VALUES (#{hizuke}, #{kaisi}, #{owari}, #{groupid},#{title},#{content});")
-  @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "scheduleid")
-  void insertGroupSchedule(groupSchedule groupSchedule);
+  @Options(useGeneratedKeys = true, keyColumn = "scheduleid")
+  void insertGroupSchedule(String hizuke, String kaisi, String owari, int groupid, String title, String content);
 
 }

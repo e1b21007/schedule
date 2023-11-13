@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>post</title>
     <meta charset="UTF-8"/>
 </head>
 <body>
+<a href="/logout">ログアウト</a>
 <h2>予定登録フォーム</h2>
-<p>予定を登録してください</p><br>
-<form method="post" action="/post">
+<p>[[${groupname}]]の予定を登録してください</p><br>
+<form method="post" th:action="@{/calendar(id=${groupid})}">
+    <p>タイトル</p>
+    <label><input type="text" name="title" placeholder="タイトル"/></label>
     <p>日付</p>
     <label>
-        <input type="number" name="year" value="2023" min="2000"/>年
-    </label>
+        <input type="date" name="date" value="2020-01-01"/>
+    </label><br><br>
+    <p>時間</p>
     <label>
-        <input type="number" name="month" value="1" min="1" max="12"/>月
+        <input type="time" name="start" value="00:00"/> ~
+        <input type="time" name="end" value="00:00"/>
     </label>
-    <label>
-        <input type="number" name="day" value="1" min="1" max="31"/>日
-    </label><br>
-    <p>タイトル</p>
-    <label><input type="text" placeholder="タイトル"/></label>
     <p>内容</p>
     <label>
         <textarea name="content" rows="4" cols="40" placeholder="予定の内容を記入してください。"></textarea>
     </label><br><br>
     <input type="submit" value="送信"/>
-</form>
+</form><br>
+<a th:href="@{/calendar(id=${groupid})}">戻る</a>
 </body>
 </html>
