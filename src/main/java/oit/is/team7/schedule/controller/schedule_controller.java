@@ -24,7 +24,10 @@ public class schedule_controller {
 
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
-    model.addAttribute("groupid", id);
+    sgroup group = sgroupmapper.selectSgroupByGroupid(id);
+
+    model.addAttribute("group", group);
+
     return "post.html";
   }
 
@@ -34,11 +37,8 @@ public class schedule_controller {
                          @RequestParam String start, @RequestParam String end,
                          @RequestParam String content,
                          ModelMap model) {
-    sgroup group = sgroupmapper.selectSgroupByGroupid(id);
-    String groupname = group.getGroupname();
     groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
 
-    model.addAttribute("groupname", groupname);
     return "calendar.html";
   }
 

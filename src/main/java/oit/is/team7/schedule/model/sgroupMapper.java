@@ -10,20 +10,23 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface sgroupMapper {
   /**
-   * groupidからsgroupTableを取得する
+   * groupidからgroupnameを取得する
    * 
    * @param groupid int グループID
    * @return ArrayList<entry> groupid-useridのリスト
    */
   @Select("SELECT GROUPNAME FROM SGROUP WHERE GROUPID = #{groupid}")
+  String selectGroupNameByGroupid(int groupid);
+
+  @Select("SELECT GROUPID, GROUPNAME FROM SGROUP where GROUPID = #{groupid}")
   sgroup selectSgroupByGroupid(int groupid);
+
 
   /**
    * groupTableを取得する
-   * 
-   * @param
+   *
    * @return ArrayList<group> groupid-groupnameのリスト
    */
   @Select("SELECT GROUPID, GROUPNAME FROM SGROUP")
-  ArrayList<sgroup> selectAllGroup();
+  ArrayList<sgroup> selectAllSgroup();
 }

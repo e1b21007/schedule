@@ -7,8 +7,8 @@
 <body>
 <a href="/logout">ログアウト</a>
 <h2>予定登録フォーム</h2>
-<p>[[${groupname}]]の予定を登録してください</p><br>
-<form method="post" th:action="@{/calendar(id=${groupid})}">
+<p>[[${group.groupname}]]の予定を登録してください</p><br>
+<form method="post" th:action="@{/calendar(id=${group.groupid})}">
     <p>タイトル</p>
     <label><input type="text" name="title" placeholder="タイトル"/></label>
     <p>日付</p>
