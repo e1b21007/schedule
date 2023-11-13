@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>content</title>
+</head>
+
+<body>
+  <div th:if="${groupSchedule}">
+    <h2>[[${groupSchedule.title}]]</h2>
+    <p>
+      [[${groupSchedule.kaisi}]]~[[${groupSchedule.owari}]]
+    </p>
+    <p>
+      [[${groupSchedule.content}]]
+    </p>
+  </div>
+  <a th:href="@{/calendar(id=${groupSchedule.groupid})}">もどる</a>
+</body>
+
+</html>

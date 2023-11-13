@@ -8,10 +8,13 @@
 
 <body>
   <h2>グループを選択してください</h2>
-  <p><a href="/calendar?id=1">Group1</a></p>
-  <p><a href="/calendar?id=2">Group2</a></p>
-  <p><a href="/calendar?id=3">Group3</a></p>
-  <p><a href="/calendar?id=4">Group4</a></p>
+  <div th:each="group:${groups}">
+    <p>
+      <a th:href="@{/calendar(id=${group.groupid})}">
+        [[${group.groupname}]]
+      </a>
+    </p>
+  </div>
 </body>
 
 </html>
