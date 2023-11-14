@@ -22,7 +22,11 @@ public class schedule_controller {
   groupScheduleMapper groupschedulemapper;
 
   @GetMapping("/calendar")
-  public String calendar(@RequestParam Integer id) {
+  public String calendar(@RequestParam Integer id, ModelMap model) {
+    ArrayList<groupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(id);
+
+    model.addAttribute("groupSchedules", groupSchedules);
+
     return "calendar.html";
   }
 

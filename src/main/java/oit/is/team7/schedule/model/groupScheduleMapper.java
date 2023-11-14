@@ -17,8 +17,8 @@ public interface groupScheduleMapper {
    * @param groupid int グループID
    * @return ArrayList<Integer> scheduleidのリスト
    */
-  @Select("SELECT scheduleid FROM groupSchedule WHERE GROUPID = #{groupid}")
-  ArrayList<Integer> selectgroupScheduleidByGroupid(int groupid);
+  @Select("SELECT * FROM groupSchedule WHERE GROUPID = #{groupid}")
+  ArrayList<groupSchedule> selectgroupScheduleByGroupid(int groupid);
 
   /**
    * groupidとhizukeからscheduleidを取得する
