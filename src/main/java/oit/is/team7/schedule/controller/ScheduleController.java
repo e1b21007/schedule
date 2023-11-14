@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ScheduleController {
   @Autowired
-  GroupMapper sgroupmapper;
+  GroupMapper groupmapper;
   @Autowired
   GroupScheduleMapper groupschedulemapper;
   @Autowired
@@ -41,7 +41,7 @@ public class ScheduleController {
 
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
-    Group group = sgroupmapper.selectSgroupByGroupid(id);
+    Group group = groupmapper.selectSgroupByGroupid(id);
 
     model.addAttribute("group", group);
 
@@ -52,8 +52,7 @@ public class ScheduleController {
   public String calendar(@RequestParam Integer id,
       @RequestParam String title, @RequestParam String date,
       @RequestParam String start, @RequestParam String end,
-      @RequestParam String content,
-      ModelMap model) {
+      @RequestParam String content) {
     groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
 
     return "calendar.html";
@@ -63,17 +62,15 @@ public class ScheduleController {
   public String home(Principal prin, ModelMap model) {
     String username = prin.getName();
     User user = usermapper.selectByname(username);
-    ArrayList<Group> groups = sgroupmapper.selectAllSgroup();
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
-    ArrayList<Group> entryGroup = new ArrayList<>(groups);
+    ArrayList<Group> entryGroup = new ArrayList<>();
 
-    for (Group group : groups) {
       for (Entry entry : entries) {
-        if (group.getGroupid() == entry.getGroupid()) {
-          entryGroup.add(group);
+        if (entry.getUserid() == user.getUserid()) {
+          entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+          System.out.println(entry.getGroupid());
         }
       }
-    }
 
     model.addAttribute("groups", entryGroup);
 

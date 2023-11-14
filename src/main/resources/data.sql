@@ -1,12 +1,12 @@
-INSERT INTO User (username) VALUES ('user1');
-INSERT INTO User (username) VALUES ('user2');
-INSERT INTO User (username) VALUES ('user3');
-INSERT INTO User (username) VALUES ('user4');
+INSERT INTO Users (username) VALUES ('user1');
+INSERT INTO Users (username) VALUES ('user2');
+INSERT INTO Users (username) VALUES ('user3');
+INSERT INTO Users (username) VALUES ('user4');
 
-INSERT INTO Group (GroupName) VALUES ('Group1');
-INSERT INTO Group (GroupName) VALUES ('Group2');
-INSERT INTO Group (GroupName) VALUES ('Group3');
-INSERT INTO Group (GroupName) VALUES ('Group4');
+INSERT INTO Groups (GroupName) VALUES ('Group1');
+INSERT INTO Groups (GroupName) VALUES ('Group2');
+INSERT INTO Groups (GroupName) VALUES ('Group3');
+INSERT INTO Groups (GroupName) VALUES ('Group4');
 
 INSERT INTO Entry (userid,Groupid) VALUES (1,1);
 INSERT INTO Entry (userid,Groupid) VALUES (2,2);

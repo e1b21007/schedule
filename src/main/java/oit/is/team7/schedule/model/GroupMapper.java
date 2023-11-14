@@ -15,11 +15,14 @@ public interface GroupMapper {
    * @param groupid int グループID
    * @return ArrayList<entry> groupid-useridのリスト
    */
-  @Select("SELECT GROUPNAME FROM SGROUP WHERE GROUPID = #{groupid}")
+  @Select("SELECT GROUPNAME FROM GROUPS WHERE GROUPID = #{groupid}")
   String selectGroupNameByGroupid(int groupid);
 
-  @Select("SELECT GROUPID, GROUPNAME FROM SGROUP where GROUPID = #{groupid}")
+  @Select("SELECT GROUPID, GROUPNAME FROM GROUPS where GROUPID = #{groupid}")
   Group selectSgroupByGroupid(int groupid);
+
+  @Select("SELECT  GROUPID, GROUPNAME FROM GROUPS WHERE  GROUPID = #{groupid}")
+  ArrayList<Group> selectGroupByGroupid(int groupid);
 
 
   /**
@@ -27,6 +30,6 @@ public interface GroupMapper {
    *
    * @return ArrayList<group> groupid-groupnameのリスト
    */
-  @Select("SELECT GROUPID, GROUPNAME FROM SGROUP")
+  @Select("SELECT GROUPID, GROUPNAME FROM GROUPS")
   ArrayList<Group> selectAllSgroup();
 }

@@ -1,9 +1,9 @@
-CREATE TABLE User (
-    id IDENTITY,
+CREATE TABLE Users (
+    userid IDENTITY,
     userName VARCHAR NOT NULL
 );
 
-CREATE TABLE Group (
+CREATE TABLE Groups (
     Groupid IDENTITY,
     GroupName VARCHAR NOT NULL
 );
@@ -12,8 +12,8 @@ CREATE TABLE Entry (
     userid int,
     Groupid int,
     PRIMARY KEY(userid,Groupid),
-    FOREIGN KEY(userid) REFERENCES sUser,
-    FOREIGN KEY(Groupid) REFERENCES sGroup
+    FOREIGN KEY(userid) REFERENCES Users,
+    FOREIGN KEY(Groupid) REFERENCES Groups
 );
 
 CREATE TABLE GroupSchedule (
@@ -24,5 +24,5 @@ CREATE TABLE GroupSchedule (
     Groupid int,
     title VARCHAR NOT NULL,
     content VARCHAR NOT NULL,
-    FOREIGN KEY(Groupid) REFERENCES sGroup
+    FOREIGN KEY(Groupid) REFERENCES Groups
 );
