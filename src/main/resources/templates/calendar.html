@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
@@ -11,16 +11,19 @@
   <a href="/post?id=1">post</a>
   <p>予定一覧</p>
   <table border="1">
-    <thead>
+    <tr>
       <th>日付</th>
       <th>タイトル</th>
-    </thead>
-    <tr>
-      <td>x月x日</td>
-      <td>xxxxx</td>
+      <th>開始時刻</th>
+      <th>終了時刻</th>
+    </tr>
+    <tr th:each="group:${groupSchedules}">
+      <td th:text="${group.hizuke}"></td>
+      <td th:text="${group.title}"></td>
+      <td th:text="${group.kaisi}"></td>
+      <td th:text="${group.owari}"></td>
       <td><a href="/detail">詳細</a></td>
     </tr>
-    </tbody>
   </table>
   <a href="/home">もどる</a>
 </body>
