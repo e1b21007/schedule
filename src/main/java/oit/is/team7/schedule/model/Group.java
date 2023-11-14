@@ -1,6 +1,6 @@
 package oit.is.team7.schedule.model;
 
-public class sgroup {
+public class Group {
     private int groupid;
     private String groupname;
 

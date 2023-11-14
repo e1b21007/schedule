@@ -1,9 +1,9 @@
-CREATE TABLE sUser (
+CREATE TABLE User (
     id IDENTITY,
     userName VARCHAR NOT NULL
 );
 
-CREATE TABLE sGroup (
+CREATE TABLE Group (
     Groupid IDENTITY,
     GroupName VARCHAR NOT NULL
 );

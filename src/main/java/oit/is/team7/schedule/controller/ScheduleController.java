@@ -1,9 +1,9 @@
 package oit.is.team7.schedule.controller;
 
-import oit.is.team7.schedule.model.sgroup;
-import oit.is.team7.schedule.model.sgroupMapper;
-import oit.is.team7.schedule.model.groupSchedule;
-import oit.is.team7.schedule.model.groupScheduleMapper;
+import oit.is.team7.schedule.model.Group;
+import oit.is.team7.schedule.model.GroupMapper;
+import oit.is.team7.schedule.model.GroupSchedule;
+import oit.is.team7.schedule.model.GroupScheduleMapper;
 
 import java.util.ArrayList;
 
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class schedule_controller {
+public class ScheduleController {
   @Autowired
-  sgroupMapper sgroupmapper;
+  GroupMapper sgroupmapper;
   @Autowired
-  groupScheduleMapper groupschedulemapper;
+  GroupScheduleMapper groupschedulemapper;
 
   @GetMapping("/calendar")
   public String calendar(@RequestParam Integer id, ModelMap model) {
-    ArrayList<groupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(id);
+    ArrayList<GroupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(id);
 
     model.addAttribute("groupSchedules", groupSchedules);
 
@@ -32,7 +32,7 @@ public class schedule_controller {
 
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
-    sgroup group = sgroupmapper.selectSgroupByGroupid(id);
+    Group group = sgroupmapper.selectSgroupByGroupid(id);
 
     model.addAttribute("group", group);
 
@@ -52,7 +52,7 @@ public class schedule_controller {
 
   @GetMapping("/home")
   public String home(ModelMap model) {
-    ArrayList<sgroup> groups = sgroupmapper.selectAllSgroup();
+    ArrayList<Group> groups = sgroupmapper.selectAllSgroup();
 
     model.addAttribute("groups", groups);
 
@@ -61,7 +61,7 @@ public class schedule_controller {
 
   @GetMapping("/detail")
   public String content(ModelMap model) {
-    groupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(1);
+    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(1);
 
     model.addAttribute("groupSchedule", groupSchedule);
 
