@@ -4,7 +4,12 @@ import oit.is.team7.schedule.model.Group;
 import oit.is.team7.schedule.model.GroupMapper;
 import oit.is.team7.schedule.model.GroupSchedule;
 import oit.is.team7.schedule.model.GroupScheduleMapper;
+import oit.is.team7.schedule.model.Entry;
+import oit.is.team7.schedule.model.EntryMapper;
+import oit.is.team7.schedule.model.User;
+import oit.is.team7.schedule.model.UserMapper;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,10 @@ public class ScheduleController {
   GroupMapper sgroupmapper;
   @Autowired
   GroupScheduleMapper groupschedulemapper;
+  @Autowired
+  EntryMapper entrymapper;
+  @Autowired
+  UserMapper usermapper;
 
   @GetMapping("/calendar")
   public String calendar(@RequestParam Integer id, ModelMap model) {
@@ -51,10 +60,22 @@ public class ScheduleController {
   }
 
   @GetMapping("/home")
-  public String home(ModelMap model) {
+  public String home(Principal prin, ModelMap model) {
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
     ArrayList<Group> groups = sgroupmapper.selectAllSgroup();
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+    ArrayList<Group> entryGroup = new ArrayList<>(groups);
 
-    model.addAttribute("groups", groups);
+    for (Group group : groups) {
+      for (Entry entry : entries) {
+        if (group.getGroupid() == entry.getGroupid()) {
+          entryGroup.add(group);
+        }
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
 
     return "home.html";
   }
