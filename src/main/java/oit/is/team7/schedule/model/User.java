@@ -1,6 +1,6 @@
 package oit.is.team7.schedule.model;
 
-public class suser {
+public class User {
     private int userid;
     private String username;
 

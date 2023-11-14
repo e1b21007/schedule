@@ -1,6 +1,6 @@
 package oit.is.team7.schedule.model;
 
-public class groupSchedule {
+public class GroupSchedule {
     private int scheduleid;
     private String hizuke;
     private String kaisi;
