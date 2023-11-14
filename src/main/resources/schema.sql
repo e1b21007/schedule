@@ -1,5 +1,5 @@
 CREATE TABLE Users (
-    id IDENTITY,
+    userid IDENTITY,
     userName VARCHAR NOT NULL
 );
 

@@ -11,14 +11,14 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper {
 
   // 一致するidの情報をとってくる
-  @Select("select * from suser where id = #{id}")
+  @Select("select * from users where userid = #{id}")
   User selectById(int id);
 
   // 一致する名前の情報をとってくる
-  @Select("select * from suser where username = #{name}")
+  @Select("select * from users where username = #{name}")
   User selectByname(String name);
 
   // ユーザ全員の情報をとってくる
-  @Select("select * from suser")
+  @Select("select * from users")
   ArrayList<User> selectAllByUsers();
 }
