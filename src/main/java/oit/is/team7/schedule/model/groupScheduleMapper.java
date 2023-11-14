@@ -29,15 +29,19 @@ public interface GroupScheduleMapper {
   @Select("SELECT * FROM groupSchedule WHERE Scheduleid = #{scheduleid}")
   GroupSchedule getgroupScheduleByScheduleid(int scheduleid);
 
-    /**
-   * scheduleidから終了時刻を修正する
-   *
-   * @param scheduleid int スケジュールid
-   * @param owari String 終了時刻
+  /**
+   * scheduleidからGroupScheduleを修正する
+   * @param hizuke  String 予定の日付
+   * @param kaisi   String 予定の開始時刻
+   * @param owari   String 予定の終了時刻
+   * @param groupid int グループID
+   * @param title   String タイトル
+   * @param content String 本文
    * @return void
    */
-  @Update("UPDATE groupSchedule SET owari= #{owari} WHERE Scheduleid = #{scheduleid}")
-  void UpdateOwaribyScheduleid(int scheduleid, String owari);
+
+  @Update("UPDATE GroupSchedule SET hizuke=#{hizuke}, kaisi= #{kaisi}, owari= #{owari}, groupid= #{groupid},title= #{title},content= #{content} WHERE ScheduleId = #{ScheduleId}")
+  void UpdateGroupScheduleByScheduleId(int ScheduleId, String hizuke, String kaisi, String owari, int groupid, String title, String content);
 
   /**
    * groupScheduleのインサート文
