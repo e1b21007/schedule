@@ -39,6 +39,8 @@ public class ScheduleController {
     return "calendar.html";
   }
 
+  /*てすと */
+
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
     Group group = groupmapper.selectSgroupByGroupid(id);
