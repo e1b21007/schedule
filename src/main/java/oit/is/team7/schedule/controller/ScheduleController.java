@@ -52,8 +52,11 @@ public class ScheduleController {
   public String calendar(@RequestParam Integer id,
       @RequestParam String title, @RequestParam String date,
       @RequestParam String start, @RequestParam String end,
-      @RequestParam String content) {
-    groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
+      @RequestParam String content,
+      ModelMap model) {
+      groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
+      ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
+      model.addAttribute("groupSchedules", scheduleList);
 
     return "calendar.html";
   }
