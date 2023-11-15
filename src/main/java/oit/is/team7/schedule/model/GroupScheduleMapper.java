@@ -12,12 +12,12 @@ import org.apache.ibatis.annotations.Update;
 public interface GroupScheduleMapper {
 
   /**
-   * groupidからscheduleidを取得する
+   * groupidからscheduleのリストを日付が若い順かつ同日なら開始時刻が早い順かつどちらも同じならスケジュールID順に取得する
    *
    * @param groupid int グループID
-   * @return ArrayList<Integer> scheduleidのリスト
+   * @return ArrayList<Integer> GroupScheduleのリスト
    */
-  @Select("SELECT * FROM groupSchedule WHERE GROUPID = #{groupid}")
+  @Select("SELECT * FROM groupSchedule WHERE GROUPID = #{groupid} ORDER BY hizuke, kaisi, scheduleid")
   ArrayList<GroupSchedule> selectgroupScheduleByGroupid(int groupid);
 
     /**
@@ -31,6 +31,7 @@ public interface GroupScheduleMapper {
 
   /**
    * scheduleidからGroupScheduleを修正する
+   * @param scheduleid int スケジュールid
    * @param hizuke  String 予定の日付
    * @param kaisi   String 予定の開始時刻
    * @param owari   String 予定の終了時刻
