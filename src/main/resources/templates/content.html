@@ -8,15 +8,51 @@
 
 <body>
   <div th:if="${groupSchedule}">
+    <h2>
+      イベントの詳細
+      &emsp;
+
+    </h2>
+    <p>[[${groupSchedule.hizuke}]]</p>
     <h2>[[${groupSchedule.title}]]</h2>
     <p>
       [[${groupSchedule.kaisi}]]~[[${groupSchedule.owari}]]
     </p>
-    <p>
-      [[${groupSchedule.content}]]
-    </p>
+    <p>メモ</p>
+    <p>[[${groupSchedule.content}]]</p><br>
+    <a th:href="@{/edit(id=${groupSchedule.scheduleid})}">
+      編集
+    </a><br><br>
   </div>
-  <a th:href="@{/calendar(id=${groupSchedule.groupid})}">もどる</a>
+
+  <div th:if="${edit_flag}">
+    <p>イベントを編集</p>
+    <form method="post" th:action="@{/content(id=groupSchedule.id)}">
+      <label>
+        年月日
+        <input type="date" name="date" th:value="${groupSchedule.hizuke}" />
+      </label><br><br>
+      <label>
+        タイトル
+        <input type="text" name="title" th:value="${groupSchedule.title}" />
+      </label><br><br>
+      <label>
+        予定時間
+        <input type="time" name="start" th:value="${groupSchedule.kaisi}" />
+        ~
+        <input type="time" name="end" th:value="${groupSchedule.owari}" />
+      </label><br>
+      <p>メモ</p>
+      <label>
+        <textarea name="content" rows="4" cols="40" font-size="24px">[[${groupSchedule.content}]]</textarea>
+      </label><br /><br>
+      <input type="submit" value="変更" />
+      <br><br>
+    </form>
+  </div>
+  <a th:href="@{/calendar(id=${groupSchedule.groupid})}">
+    もどる
+  </a>
 </body>
 
 </html>

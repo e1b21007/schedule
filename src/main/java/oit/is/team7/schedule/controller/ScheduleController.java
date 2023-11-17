@@ -54,9 +54,9 @@ public class ScheduleController {
       @RequestParam String start, @RequestParam String end,
       @RequestParam String content,
       ModelMap model) {
-      groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
-      ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
-      model.addAttribute("groupSchedules", scheduleList);
+    groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
+    model.addAttribute("groupSchedules", scheduleList);
 
     return "calendar.html";
   }
@@ -68,12 +68,12 @@ public class ScheduleController {
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Group> entryGroup = new ArrayList<>();
 
-      for (Entry entry : entries) {
-        if (entry.getUserid() == user.getUserid()) {
-          entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
-          System.out.println(entry.getGroupid());
-        }
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+        System.out.println(entry.getGroupid());
       }
+    }
 
     model.addAttribute("groups", entryGroup);
 
