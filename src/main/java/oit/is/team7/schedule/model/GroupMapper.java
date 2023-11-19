@@ -21,7 +21,6 @@ public interface GroupMapper {
   @Select("SELECT GROUPID, GROUPNAME FROM SGROUP where GROUPID = #{groupid}")
   Group selectSgroupByGroupid(int groupid);
 
-
   /**
    * groupTableを取得する
    *
