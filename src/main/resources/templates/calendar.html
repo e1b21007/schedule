@@ -4,9 +4,19 @@
 <head>
   <meta charset="utf-8">
   <title>Schedule</title>
+  <script>
+    window.onload = function() {
+      var sse = new EventSource('/calendar/update');
+      sse.onmessage = function (event) {
+        console.log(event.data);
+        document.getElementById("p1").textContent = event.data;
+      }
+    }
+  </script>
 </head>
 
 <body>
+ <p id="p1"></p>
   <a href="/logout">ログアウト</a>
   <a href="/post?id=1">予定入力</a>
   <p>予定一覧</p>

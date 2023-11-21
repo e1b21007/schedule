@@ -9,15 +9,19 @@ import oit.is.team7.schedule.model.EntryMapper;
 import oit.is.team7.schedule.model.User;
 import oit.is.team7.schedule.model.UserMapper;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import oit.is.team7.schedule.service.AsyncCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 
 @Controller
 public class ScheduleController {
@@ -29,6 +33,8 @@ public class ScheduleController {
   EntryMapper entrymapper;
   @Autowired
   UserMapper usermapper;
+  @Autowired
+  AsyncCalendar asyncCalendar;
 
   @GetMapping("/calendar")
   public String calendar(@RequestParam Integer id, ModelMap model) {
@@ -112,6 +118,24 @@ public class ScheduleController {
     model.addAttribute("groupSchedule", groupSchedule);
 
     return "content.html";
+  }
+
+
+  @GetMapping("/calendar/update")
+  public SseEmitter asyncCalendar() {
+
+    // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
+    final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
+    // 引数にLongの最大値をTimeoutとして指定する
+
+    try {
+      this.asyncCalendar.count(emitter);
+    } catch (IOException e) {
+      // 例外の名前とメッセージだけ表示する
+      emitter.complete();
+    }
+
+    return emitter;
   }
 
 }
