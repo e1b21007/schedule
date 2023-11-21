@@ -27,7 +27,7 @@
 
   <div th:if="${edit_flag}">
     <p>イベントを編集</p>
-    <form method="post" th:action="@{/content(id=groupSchedule.id)}">
+    <form method="post" th:action="@{/edit(id=${groupSchedule.scheduleid})}">
       <label>
         年月日
         <input type="date" name="date" th:value="${groupSchedule.hizuke}" />
