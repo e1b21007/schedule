@@ -50,6 +50,15 @@
       <br><br>
     </form>
   </div>
+  <a th:href="@{/delete(id=${groupSchedule.scheduleid})}">
+    削除
+  </a><br><br>
+  <div th:if="${delete_flag}">
+    <p>本当に削除します、よろしいですね？</p>
+    <a th:href="@{/deleteYes(id=${groupSchedule.scheduleid},gid=${groupSchedule.groupid})}">
+      はい
+    </a><br><br>
+  </div>
   <a th:href="@{/calendar(id=${groupSchedule.groupid})}">
     もどる
   </a>
