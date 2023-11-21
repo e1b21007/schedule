@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import oit.is.team7.schedule.model.GroupSchedule;
 
 @Service
 public class AsyncCalendar {
@@ -29,10 +31,32 @@ public class AsyncCalendar {
             // 例外の名前とメッセージだけ表示する
         }
     }
-
+/*
     @Async
-    public void asyncGroupSchedule() {
+    public void asyncGroupSchedule(SseEmitter emitter ) {
+    dbUpdated = true;
+    try {
+      while (true) {// 無限ループ
+        // DBが更新されていなければ0.5s休み
+        if (false == dbUpdated) {
+          TimeUnit.MILLISECONDS.sleep(500);
+          continue;
+        }
+        // DBが更新されていれば更新後のフルーツリストを取得してsendし，1s休み，dbUpdatedをfalseにする
+        ArrayList<GroupSchedule> Schedule = this.selectgroupScheduleByGroupid(groupid);
+        emitter.send(fruits7);
+        TimeUnit.MILLISECONDS.sleep(1000);
+        dbUpdated = false;
+      }
+    } catch (Exception e) {
+      // 例外の名前とメッセージだけ表示する
+      logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
+    } finally {
+      emitter.complete();
+    }
+    System.out.println("asyncShowFruitsList complete");
+  }
 
     }
-
+*/
 }

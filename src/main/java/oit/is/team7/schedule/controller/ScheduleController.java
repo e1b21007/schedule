@@ -122,7 +122,7 @@ public class ScheduleController {
 
 
   @GetMapping("/calendar/update")
-  public SseEmitter asyncCalendar() {
+  public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
@@ -130,6 +130,7 @@ public class ScheduleController {
 
     try {
       this.asyncCalendar.count(emitter);
+      System.out.println("****************"+id);
     } catch (IOException e) {
       // 例外の名前とメッセージだけ表示する
       emitter.complete();

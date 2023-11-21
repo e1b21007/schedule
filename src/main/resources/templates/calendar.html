@@ -4,9 +4,11 @@
 <head>
   <meta charset="utf-8">
   <title>Schedule</title>
-  <script>
+  <script th:inline="javascript">
+    const groupid = /*[[${groupid}]]*/"groupid";
+    //const url = "/path/to/home?id=" + groupid;
     window.onload = function() {
-      var sse = new EventSource('/calendar/update');
+      var sse = new EventSource('/calendar/update?id='+groupid);
       sse.onmessage = function (event) {
         console.log(event.data);
         document.getElementById("p1").textContent = event.data;
