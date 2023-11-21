@@ -22,7 +22,7 @@
       <td th:text="${group.title}"></td>
       <td th:text="${group.kaisi}"></td>
       <td th:text="${group.owari}"></td>
-      <td><a href="/detail">詳細</a></td>
+      <td><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></td>
     </tr>
   </table>
   <a href="/home">もどる</a>

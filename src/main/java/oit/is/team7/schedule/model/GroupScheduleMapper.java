@@ -20,7 +20,7 @@ public interface GroupScheduleMapper {
   @Select("SELECT * FROM groupSchedule WHERE GROUPID = #{groupid} ORDER BY hizuke, kaisi, scheduleid")
   ArrayList<GroupSchedule> selectgroupScheduleByGroupid(int groupid);
 
-    /**
+  /**
    * scheduleidからgroupScheduleを取得する
    *
    * @param scheduleid int スケジュールid
@@ -31,18 +31,20 @@ public interface GroupScheduleMapper {
 
   /**
    * scheduleidからGroupScheduleを修正する
+   *
    * @param scheduleid int スケジュールid
-   * @param hizuke  String 予定の日付
-   * @param kaisi   String 予定の開始時刻
-   * @param owari   String 予定の終了時刻
-   * @param groupid int グループID
-   * @param title   String タイトル
-   * @param content String 本文
+   * @param hizuke     String 予定の日付
+   * @param kaisi      String 予定の開始時刻
+   * @param owari      String 予定の終了時刻
+   * @param groupid    int グループID
+   * @param title      String タイトル
+   * @param content    String 本文
    * @return void
    */
 
-  @Update("UPDATE GroupSchedule SET hizuke=#{hizuke}, kaisi= #{kaisi}, owari= #{owari}, groupid= #{groupid},title= #{title},content= #{content} WHERE ScheduleId = #{ScheduleId}")
-  void UpdateGroupScheduleByScheduleId(int ScheduleId, String hizuke, String kaisi, String owari, int groupid, String title, String content);
+  @Update("UPDATE GroupSchedule SET hizuke=#{hizuke}, kaisi= #{kaisi}, owari= #{owari}, title= #{title},content= #{content} WHERE ScheduleId = #{ScheduleId}")
+  void UpdateGroupScheduleByScheduleId(int ScheduleId, String hizuke, String kaisi, String owari, String title,
+      String content);
 
   /**
    * groupScheduleのインサート文

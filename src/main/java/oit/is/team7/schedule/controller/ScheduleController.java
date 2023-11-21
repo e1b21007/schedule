@@ -81,9 +81,34 @@ public class ScheduleController {
   }
 
   @GetMapping("/detail")
-  public String content(ModelMap model) {
-    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(1);
+  public String content(@RequestParam Integer id, ModelMap model) {
+    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
 
+    model.addAttribute("groupSchedule", groupSchedule);
+
+    return "content.html";
+  }
+
+  @GetMapping("/edit")
+  public String edit(@RequestParam Integer id, ModelMap model) {
+    boolean edit_flag = true;
+    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+
+    model.addAttribute("groupSchedule", groupSchedule);
+    model.addAttribute("edit_flag", edit_flag);
+
+    return "content.html";
+  }
+
+  @PostMapping("/edit")
+  public String edit(@RequestParam Integer id,
+      @RequestParam String date,
+      @RequestParam String title,
+      @RequestParam String start, @RequestParam String end,
+      @RequestParam String content,
+      ModelMap model) {
+    groupschedulemapper.UpdateGroupScheduleByScheduleId(id, date, start, end, title, content);
+    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
     model.addAttribute("groupSchedule", groupSchedule);
 
     return "content.html";
