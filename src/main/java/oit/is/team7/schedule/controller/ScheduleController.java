@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-
 @Controller
 public class ScheduleController {
   @Autowired
@@ -41,6 +40,7 @@ public class ScheduleController {
     ArrayList<GroupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(id);
 
     model.addAttribute("groupSchedules", groupSchedules);
+    model.addAttribute("groupid", id);
 
     return "calendar.html";
   }
@@ -120,16 +120,16 @@ public class ScheduleController {
     return "content.html";
   }
 
-
   @GetMapping("/calendar/update")
-  public SseEmitter asyncCalendar() {
+  public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
     // 引数にLongの最大値をTimeoutとして指定する
-
+    System.out.println("****************" + id);
     try {
       this.asyncCalendar.count(emitter);
+
     } catch (IOException e) {
       // 例外の名前とメッセージだけ表示する
       emitter.complete();

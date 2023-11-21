@@ -4,11 +4,15 @@
 <head>
   <meta charset="utf-8">
   <title>Schedule</title>
-  <script>
-    window.onload = function() {
-      var sse = new EventSource('/calendar/update');
+  <script th:inline="javascript">
+    const groupid = /*[[${groupid}]]*/"groupid";
+    console.log(groupid);
+    //const url = "/path/to/home?id=" + groupid;
+    window.onload = function () {
+      var sse = new EventSource('/calendar/update?id=' + groupid);
       sse.onmessage = function (event) {
         console.log(event.data);
+
         document.getElementById("p1").textContent = event.data;
       }
     }
@@ -16,9 +20,9 @@
 </head>
 
 <body>
- <p id="p1"></p>
+  <p id="p1"></p>
   <a href="/logout">ログアウト</a>
-  <a href="/post?id=1">予定入力</a>
+  <a th:href="@{/post(id=${groupid})}">予定入力</a>
   <p>予定一覧</p>
   <table border="1">
     <tr>
