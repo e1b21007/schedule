@@ -7,20 +7,31 @@
   <script th:inline="javascript">
     const groupid = /*[[${groupid}]]*/"groupid";
     console.log(groupid);
-    //const url = "/path/to/home?id=" + groupid;
     window.onload = function () {
       var sse = new EventSource('/calendar/update?id=' + groupid);
       sse.onmessage = function (event) {
         console.log(event.data);
-
-        document.getElementById("p1").textContent = event.data;
+        var schedule_list = JSON.parse(event.data);
+        var schedule_table = "";
+        for (var schedule of schedule_list) {
+          var bgn_tr = "<tr>";
+          var end_tr = "</tr>";
+          var date = "<td>" + schedule.hizuke + "</td>";
+          var title = "<td>" + schedule.title + "</td>";
+          var start_time = "<td>" + schedule.kaisi + "</td>";
+          var end_time = "<td>" + schedule.owari + "</td>";
+          var detail = "<td>" + "<a href='/detail?id=" + schedule.scheduleid + "'>詳細</a>" + "</td>"
+          schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + detail + end_tr;
+        }
+        console.log(schedule);
+        var tbody = document.getElementById("schedule_list");
+        tbody.innerHTML = schedule_table;
       }
     }
   </script>
 </head>
 
 <body>
-  <p id="p1"></p>
   <a href="/logout">ログアウト</a>
   <a th:href="@{/post(id=${groupid})}">予定入力</a>
   <p>予定一覧</p>
@@ -31,13 +42,15 @@
       <th>開始時刻</th>
       <th>終了時刻</th>
     </tr>
-    <tr th:each="group:${groupSchedules}">
-      <td th:text="${group.hizuke}"></td>
-      <td th:text="${group.title}"></td>
-      <td th:text="${group.kaisi}"></td>
-      <td th:text="${group.owari}"></td>
-      <td><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></td>
-    </tr>
+    <tbody id="schedule_list">
+      <tr th:each="group:${groupSchedules}">
+        <td th:text="${group.hizuke}"></td>
+        <td th:text="${group.title}"></td>
+        <td th:text="${group.kaisi}"></td>
+        <td th:text="${group.owari}"></td>
+        <td><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></td>
+      </tr>
+    </tbody>
   </table>
   <a href="/home">もどる</a>
 </body>
