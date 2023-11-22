@@ -104,8 +104,8 @@ public class ScheduleController {
   @GetMapping("/edit")
   public String edit(@RequestParam Integer id, ModelMap model) {
     boolean edit_flag = true;
-    Group group = groupmapper.selectSgroupByGroupid(id);
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(groupSchedule.getGroupid());
 
     model.addAttribute("group", group);
@@ -124,8 +124,8 @@ public class ScheduleController {
       @RequestParam String content,
       ModelMap model) {
     groupschedulemapper.UpdateGroupScheduleByScheduleId(id, date, start, end, title, content);
-    Group group = groupmapper.selectSgroupByGroupid(id);
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     model.addAttribute("groupSchedule", groupSchedule);
     model.addAttribute("group", group);
