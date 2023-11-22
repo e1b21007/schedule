@@ -21,6 +21,8 @@ public class ScheduleAuthConfiguration {
         .authorizeHttpRequests(authz -> authz.requestMatchers(AntPathRequestMatcher.antMatcher("/home"))
                 .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/calendar"))
                 .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/post"))
+                .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/detail"))
+                .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/edit"))
                 .authenticated().requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll())
         .csrf(csrf -> csrf
             .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/*")))

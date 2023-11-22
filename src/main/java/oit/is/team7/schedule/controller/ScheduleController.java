@@ -47,24 +47,29 @@ public class ScheduleController {
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
     Group group = groupmapper.selectSgroupByGroupid(id);
-
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
     model.addAttribute("group", group);
+    model.addAttribute("groupSchedules", scheduleList);
 
     return "post.html";
   }
 
-  @PostMapping("/calendar")
+  @PostMapping("/post")
   public String calendar(@RequestParam Integer id,
       @RequestParam String title, @RequestParam String date,
       @RequestParam String start, @RequestParam String end,
       @RequestParam String content,
       ModelMap model) {
+
     this.asyncCalendar.syncInsertSchedule(id, title, date, start, end, content);
     ArrayList<GroupSchedule> scheduleList = asyncCalendar.syncShowGroupSchedule(id);
+    Group group = groupmapper.selectSgroupByGroupid(id);
+
+    model.addAttribute("group", group);
     model.addAttribute("groupSchedules", scheduleList);
     model.addAttribute("groupid", id);
 
-    return "calendar.html";
+    return "post.html";
   }
 
   @GetMapping("/home")
@@ -89,8 +94,12 @@ public class ScheduleController {
   @GetMapping("/detail")
   public String content(@RequestParam Integer id, ModelMap model) {
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
+    model.addAttribute("scheduleList", scheduleList);
 
     return "content.html";
   }
@@ -99,14 +108,19 @@ public class ScheduleController {
   public String edit(@RequestParam Integer id, ModelMap model) {
     boolean edit_flag = true;
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
 
+    model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
+    model.addAttribute("scheduleList", scheduleList);
     model.addAttribute("edit_flag", edit_flag);
 
     return "content.html";
   }
 
-  @PostMapping("/edit")
+  @PostMapping("/detail")
   public String edit(@RequestParam Integer id,
       @RequestParam String date,
       @RequestParam String title,
@@ -115,12 +129,19 @@ public class ScheduleController {
       ModelMap model) {
     this.asyncCalendar.syncUpdateSchedule(id, date, title, start, end, content);
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     model.addAttribute("groupSchedule", groupSchedule);
+    model.addAttribute("group", group);
+    model.addAttribute("groupSchedule", groupSchedule);
+    model.addAttribute("scheduleList", scheduleList);
 
     return "content.html";
   }
 
   @GetMapping("/delete")
+
   public String delete(@RequestParam Integer id, ModelMap model) {
     boolean delete_flag = true;
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);

@@ -1,31 +1,59 @@
 <!DOCTYPE html >
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>post</title>
+    <title>新規予定</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/css/form-style.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-<a href="/logout">ログアウト</a>
-<h2>予定登録フォーム</h2>
-<p>[[${group.groupname}]]の予定を登録してください</p><br>
-<form method="post" th:action="@{/calendar(id=${group.groupid})}">
-    <p>タイトル</p>
-    <label><input type="text" name="title" placeholder="タイトル" required/></label>
-    <p>日付</p>
-    <label>
-        <input type="date" name="date" value="2020-01-01" required/>
-    </label><br><br>
-    <p>時間</p>
-    <label>
-        <input type="time" name="start" value="00:00" required/> ~
-        <input type="time" name="end" value="00:00" required/>
-    </label>
-    <p>内容</p>
-    <label>
-        <textarea name="content" rows="4" cols="40" placeholder="予定の内容を記入してください。" required></textarea>
-    </label><br><br>
-    <input type="submit" value="送信"/>
-</form><br>
-<a th:href="@{/calendar(id=${group.groupid})}">もどる</a>
+<div class="header">
+    <a th:href="@{/home(id=${group.groupid})}" class="logo">Schedule</a>
+    <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
+</div>
+<div class="wrap">
+    <div class="main">
+        <div class="container main-content">
+            <form  method="post" th:action="@{/post(id=${group.groupid})}">
+                <h2>予定登録フォーム</h2>
+                <p>[[${group.groupname}]]の予定を追加してください</p>
+                <p>タイトル</p>
+                <label><input type="text" name="title" placeholder="タイトル" required/></label>
+                <p>年月日</p>
+                <label>
+                    <input type="date" name="date" value="2020-01-01" required/>
+                </label>
+                <p>時間</p>
+                <label>
+                    <input type="time" name="start" value="00:00" required/> ~
+                    <input type="time" name="end" value="00:00" required/>
+                </label>
+                <p>内容</p>
+                <label>
+                    <textarea name="content" rows="10" cols="30" placeholder="予定の内容を記入してください。" required></textarea>
+                </label>
+                <input type="submit" value="追加"/>
+            </form>
+        </div>
+        <div class="schedule container">
+            <h2>[[${group.groupname}]]の予定一覧</h2>
+            <table>
+                <tr>
+                    <th>日付</th>
+                    <th>タイトル</th>
+                    <th>開始時刻</th>
+                    <th>終了時刻</th>
+                </tr>
+                <tr th:each="schedule:${groupSchedules}">
+                    <td th:text="${schedule.hizuke}"></td>
+                    <td><a th:href="@{/detail(id=${schedule.scheduleid})}">[[${schedule.title}]]</a></td>
+                    <td th:text="${schedule.kaisi}"></td>
+                    <td th:text="${schedule.owari}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a th:href="@{/calendar(id=${group.groupid})}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
+</div>
 </body>
 </html>
