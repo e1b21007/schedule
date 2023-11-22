@@ -134,20 +134,9 @@ public class ScheduleController {
 
     return "content.html";
   }
-
-//  @GetMapping("/delete")
-//  public String delete(@RequestParam Integer id ,ModelMap model) {
-//    boolean delete_flag = true;
-//    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-//    model.addAttribute("delete_flag", delete_flag);
-//    model.addAttribute("groupSchedule", groupSchedule);
-//    return "content.html";
-//  }
-
   @GetMapping("/delete")
   public String deleteYes(@RequestParam Integer id, @RequestParam Integer gid,ModelMap model) {
     groupschedulemapper.DeleteGroupScheduleByScheduleId(id);
-    calendar(gid, model);
     ArrayList<GroupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(gid);
 
     model.addAttribute("groupSchedules", groupSchedules);
