@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Delete;
 
 @Mapper
 public interface GroupScheduleMapper {
@@ -59,5 +60,14 @@ public interface GroupScheduleMapper {
   @Insert("INSERT INTO groupSchedule (hizuke, kaisi, owari, groupid,title,content) VALUES (#{hizuke}, #{kaisi}, #{owari}, #{groupid},#{title},#{content});")
   @Options(useGeneratedKeys = true, keyColumn = "scheduleid")
   void insertGroupSchedule(String hizuke, String kaisi, String owari, int groupid, String title, String content);
+
+  /**
+   * groupScheduleのDelete文
+   *
+   * @param scheduleid int スケジュールID
+   * @return void
+   */
+  @Delete("DELETE FROM GroupSchedule WHERE ScheduleId = #{ScheduleId};")
+  void DeleteGroupScheduleByScheduleId(int ScheduleId);
 
 }
