@@ -3,14 +3,17 @@
 <head>
     <title>post</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="styles/post.css"/>
+    <link rel="stylesheet" href="/css/post.css"/>
 </head>
 <body>
 <div class="wrap">
-    <a href="/logout">ログアウト</a>
-    <h2>予定登録フォーム</h2>
-    <p>[[${group.groupname}]]の予定を登録してください</p><br>
+    <div class="header">
+        <a th:href="@{/home(id=${group.groupid})}" class="logo">Schedule</a>
+        <a href="/logout">ログアウト</a>
+    </div>
     <form method="post" th:action="@{/calendar(id=${group.groupid})}">
+        <h2>予定登録フォーム</h2>
+        <p>[[${group.groupname}]]の予定を登録してください</p>
         <p>タイトル</p>
         <label><input type="text" name="title" placeholder="タイトル" required/></label>
         <p>日付</p>
@@ -24,7 +27,7 @@
         </label>
         <p>内容</p>
         <label>
-            <textarea name="content" rows="10" cols="50" placeholder="予定の内容を記入してください。" required></textarea>
+            <textarea name="content" rows="10" cols="30" placeholder="予定の内容を記入してください。" required></textarea>
         </label>
         <input type="submit" value="送信"/>
     </form>

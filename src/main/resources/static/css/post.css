@@ -13,18 +13,49 @@ body {
 }
 
 .wrap {
-    width: 100%;
-    max-width: 1200px;
+    width: 80%;
+    max-width: 80%;
     min-height: 100vh;
     margin: 0 auto;
     padding: 0 20px;
 }
 
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-decoration: none;
+    color : #000000;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.logo:hover {
+    color: #0080FF;
+}
 h2 {
     font-size: 1.5em;
     font-weight: 700;
+    padding: 0;
     margin: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1.2rem 0;
+}
+
+
+form {
+    margin: 0 auto;
+    padding: 2rem;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 form, p{
@@ -33,17 +64,20 @@ form, p{
 
 label {
     display: block;
-    margin-bottom: 0.8rem;
     padding : 0.8rem;
 }
 
 a {
-    margin-bottom: 5rem;
+    margin: auto 5rem;
+}
+
+a:hover {
+    color: #0080FF;
 }
 
 input[type="time"] {
-    width: 40%;
-    height: 50px;
+    width: 10rem;
+    height: 2.5rem;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid;
@@ -53,24 +87,10 @@ input[type="time"] {
     resize: none;
 }
 
-input[type="submit"] {
-    background-color: #00BFFF;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
-
-}
 
 textarea {
-    width: 100%;
-    height: 300px;
+    width: 30rem;
+    height: 10rem;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid;
@@ -80,13 +100,9 @@ textarea {
     resize: none;
 }
 
-
-textarea:focus {
-    border: 3px solid #555;
-}
 input[type="text"] {
-    width: 100%;
-    height: 50px;
+    width: 20rem;
+    height: 2.5rem;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid;
@@ -98,8 +114,8 @@ input[type="text"] {
 }
 
 input[type="date"] {
-    width: 100%;
-    height: 50px;
+    width: 20rem;
+    height: 2.5rem;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid;
@@ -107,6 +123,22 @@ input[type="date"] {
     background-color: #f8f8f8;
     font-size: 16px;
     resize: none;
+}
+
+input[type="submit"] {
+    background-color: #00BFFF;
+    width: 8rem;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 12rem;
+
 }
 
 input[type="submit"]:hover {
