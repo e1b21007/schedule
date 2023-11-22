@@ -40,11 +40,11 @@ public class ScheduleAuthConfiguration {
         .password("{bcrypt}$2y$10$DPZvoBEzZrecXwgAhq/69OoHbWam2Kq0taE9gXsEHJ4q9yRzGtvHO")
         .roles("USER").build();
     UserDetails user2 = User.withUsername("user2")
-        .password("{bcrypt}$2y$10$DPZvoBEzZrecXwgAhq/69OoHbWam2Kq0taE9gXsEHJ4q9yRzGtvHO").roles("USER").build();
-    UserDetails user3 = User.withUsername("ほんだ")
-        .password("{bcrypt}$2y$10$AQOcWiX2.MA6Czw4p4OYzuw25.7Vcmgav6gaQDKFsu8opn8BdrjDG").roles("USER").build();
-    UserDetails user4 = User.withUsername("いがき")
-        .password("{bcrypt}$2y$10$AQOcWiX2.MA6Czw4p4OYzuw25.7Vcmgav6gaQDKFsu8opn8BdrjDG").roles("USER").build();
+        .password("{bcrypt}$2y$10$SbWZIjsMBTtJ6SaG34GxauRrl7rD7YBKDQihnvmwaoEU/Q0kYy4ae").roles("USER").build();
+    UserDetails user3 = User.withUsername("user3")
+        .password("{bcrypt}$2y$10$bifSQsD6CxLgDfbvmdJi5.MArojBdtczVtBMqwr6F3PaCFoXO7s26").roles("USER").build();
+    UserDetails user4 = User.withUsername("user4")
+        .password("{bcrypt}$2y$10$qBTq8Ku0XpEA.MlHdbgMz.AocTZOc53q1TMb1mUP.vmK73vgkPTkO").roles("USER").build();
 
     return new InMemoryUserDetailsManager(user1, user2, user3, user4);
   }

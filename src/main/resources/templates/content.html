@@ -9,12 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+
+  <script th:inline="javascript">
+    const groupid = /*[[${groupSchedule.groupid}]]*/"groupid";
+    const schduleid = /*[[${groupSchedule.scheduleid}]]*/"scheduleid";
+    const deleteRequest = "/delete?id=" + schduleid + "&gid=" + groupid;
+    function deleteSchedule() {
+      const flag = confirm("本当に削除しますか？");
+      if (flag === true) {
+        location.href = deleteRequest;
+      }
+    }
+  </script>
 </head>
 
 <body>
   <div class="header">
     <a th:href="@{/home(id=${groupSchedule.groupid})}" class="logo">Schedule</a>
-    <a href="/logout"><span class="material-icons">logout</span>ログアウト</a>
+    <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
   <div class="wrap">
     <div class="main">
@@ -22,7 +34,10 @@
         <div th:if="${edit_flag == null}">
           <h2>イベントの詳細</h2>
           <p>[[${groupSchedule.title}]]を閲覧中です</p>
-          <a th:href="@{/edit(id=${groupSchedule.scheduleid})}" class="right">
+          <button onclick="deleteSchedule()" class="right control-button dangerous-button">
+            <span class="material-icons">delete</span>削除
+          </button>
+          <a th:href="@{/edit(id=${groupSchedule.scheduleid})}" class="right control-button">
             <span class="material-icons">edit</span>編集
           </a>
           <p>年月日</p>
@@ -35,14 +50,14 @@
           </p>
           <p>内容</p>
           <p class="stored-item">[[${groupSchedule.content}]]</p>
-      </div>
-      <div th:if="${edit_flag}">
-        <h2>イベントの編集</h2>
-        <p>[[${group.groupname}]]の予定[[${groupSchedule.title}]]を編集中です</p>
-        <a th:href="@{/detail(id=${groupSchedule.scheduleid})}" class="right">
+        </div>
+        <div th:if="${edit_flag}">
+          <h2>イベントの編集</h2>
+          <p>[[${group.groupname}]]の予定[[${groupSchedule.title}]]を編集中です</p>
+        <a th:href="@{/detail(id=${groupSchedule.scheduleid})}" class="right dangerous-button">
           <span class="material-icons">cancel</span>取り消し
         </a>
-        <form method="post" th:action="@{/edit(id=${groupSchedule.scheduleid})}">
+        <form method="post" th:action="@{/detail(id=${groupSchedule.scheduleid})}">
           <p>タイトル</p>
           <label>
             <input type="text" name="title" th:value="${groupSchedule.title}" />
@@ -60,7 +75,7 @@
           <p>内容</p>
           <label>
             <textarea name="content" rows="10" cols="30" >[[${groupSchedule.content}]]</textarea>
-          </label><br /><br>
+          </label>
           <input type="submit" value="変更" />
         </form>
       </div>
@@ -82,7 +97,7 @@
           </tr>
         </table>
         <div>
-          <a th:href="@{/post(id=${group.groupid})}" class="right">
+          <a th:href="@{/post(id=${group.groupid})}" class="right control-button add-button">
             <span class="material-icons">add</span>新規作成
           </a>
         </div>

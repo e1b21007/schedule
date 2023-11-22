@@ -27,9 +27,6 @@ body {
     color : #000000;
     font-family: 'Noto Sans KR', sans-serif;
 }
-.logo:hover {
-    color: #0080FF;
-}
 h2 {
     font-size: 1.5em;
     font-weight: 700;
@@ -39,7 +36,7 @@ h2 {
 
 .header {
     margin: 0 auto;
-    max-width: 90%;
+    max-width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -65,9 +62,7 @@ h2 {
 }
 
 .main-content {
-    max-width: 800px;
     width: 60%;
-    margin: 0 auto;
 }
 
 .main-content p{
@@ -75,17 +70,35 @@ h2 {
     padding-left: 1rem;
 }
 
+.main-content .control-button {
+    border: none;
+    color: #808080;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.main-content .control-button:hover{
+    color: #505050;
+}
+
+.main .dangerous-button {
+    color: #ff0000
+}
+
+.main .dangerous-button:hover {
+    /*orange*/
+    color: #ff4500;
+}
+
 label {
     display: inline-block;
     width: 100%;
 }
 
-a {
+.logout-button, .add-button{
     text-decoration: none;
-}
-
-.header a {
     margin: auto 5rem;
+    color: #0000ee;
 }
 
 a:hover {
