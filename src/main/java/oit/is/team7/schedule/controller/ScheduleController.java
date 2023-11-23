@@ -141,19 +141,8 @@ public class ScheduleController {
   }
 
   @GetMapping("/delete")
-
-  public String delete(@RequestParam Integer id, ModelMap model) {
-    boolean delete_flag = true;
-    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    model.addAttribute("delete_flag", delete_flag);
-    model.addAttribute("groupSchedule", groupSchedule);
-    return "content.html";
-  }
-
-  @GetMapping("/deleteYes")
   public String deleteYes(@RequestParam Integer id, @RequestParam Integer gid, ModelMap model) {
-    asyncCalendar.syncDeleteSchedule(id);
-    // calendar(gid, model);
+    this.asyncCalendar.syncDeleteSchedule(id);
     ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(gid);
 
     model.addAttribute("groupSchedules", groupSchedules);
