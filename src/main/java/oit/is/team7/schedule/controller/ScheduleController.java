@@ -8,12 +8,11 @@ import oit.is.team7.schedule.model.Entry;
 import oit.is.team7.schedule.model.EntryMapper;
 import oit.is.team7.schedule.model.User;
 import oit.is.team7.schedule.model.UserMapper;
+import oit.is.team7.schedule.service.AsyncCalendar;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import oit.is.team7.schedule.service.AsyncCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,7 +36,7 @@ public class ScheduleController {
 
   @GetMapping("/calendar")
   public String calendar(@RequestParam Integer id, ModelMap model) {
-    ArrayList<GroupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(id);
+    ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(id);
 
     model.addAttribute("groupSchedules", groupSchedules);
     model.addAttribute("groupid", id);
@@ -61,11 +60,14 @@ public class ScheduleController {
       @RequestParam String start, @RequestParam String end,
       @RequestParam String content,
       ModelMap model) {
-    groupschedulemapper.insertGroupSchedule(date, start, end, id, title, content);
+
+    this.asyncCalendar.syncInsertSchedule(id, title, date, start, end, content);
+    ArrayList<GroupSchedule> scheduleList = asyncCalendar.syncShowGroupSchedule(id);
     Group group = groupmapper.selectSgroupByGroupid(id);
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
+
     model.addAttribute("group", group);
     model.addAttribute("groupSchedules", scheduleList);
+    model.addAttribute("groupid", id);
 
     return "post.html";
   }
@@ -92,7 +94,8 @@ public class ScheduleController {
   @GetMapping("/detail")
   public String content(@RequestParam Integer id, ModelMap model) {
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
@@ -106,7 +109,8 @@ public class ScheduleController {
     boolean edit_flag = true;
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
     Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
 
     model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
@@ -123,10 +127,11 @@ public class ScheduleController {
       @RequestParam String start, @RequestParam String end,
       @RequestParam String content,
       ModelMap model) {
-    groupschedulemapper.UpdateGroupScheduleByScheduleId(id, date, start, end, title, content);
+    this.asyncCalendar.syncUpdateSchedule(id, date, title, start, end, content);
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
     Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     model.addAttribute("groupSchedule", groupSchedule);
     model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
@@ -134,10 +139,11 @@ public class ScheduleController {
 
     return "content.html";
   }
+
   @GetMapping("/delete")
-  public String deleteYes(@RequestParam Integer id, @RequestParam Integer gid,ModelMap model) {
-    groupschedulemapper.DeleteGroupScheduleByScheduleId(id);
-    ArrayList<GroupSchedule> groupSchedules = groupschedulemapper.selectgroupScheduleByGroupid(gid);
+  public String deleteYes(@RequestParam Integer id, @RequestParam Integer gid, ModelMap model) {
+    this.asyncCalendar.syncDeleteSchedule(id);
+    ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(gid);
 
     model.addAttribute("groupSchedules", groupSchedules);
     model.addAttribute("groupid", gid);
@@ -149,16 +155,9 @@ public class ScheduleController {
   public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
-    final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
-    // 引数にLongの最大値をTimeoutとして指定する
+    final SseEmitter emitter = new SseEmitter();//
     System.out.println("****************" + id);
-    try {
-      this.asyncCalendar.count(emitter);
-
-    } catch (IOException e) {
-      // 例外の名前とメッセージだけ表示する
-      emitter.complete();
-    }
+    this.asyncCalendar.asyncGroupSchedule(emitter, id);
 
     return emitter;
   }
