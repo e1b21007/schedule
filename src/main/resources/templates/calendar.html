@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Schedule</title>
+  <link rel="stylesheet" href="/css/form-style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script th:inline="javascript">
     const groupid = /*[[${groupid}]]*/"groupid";
     console.log(groupid);
@@ -32,27 +34,34 @@
 </head>
 
 <body>
-  <a href="/logout">ログアウト</a>
-  <a th:href="@{/post(id=${groupid})}">予定入力</a>
-  <p>予定一覧</p>
-  <table border="1">
-    <tr>
-      <th>日付</th>
-      <th>タイトル</th>
-      <th>開始時刻</th>
-      <th>終了時刻</th>
-    </tr>
-    <tbody id="schedule_list">
-      <tr th:each="group:${groupSchedules}">
-        <td th:text="${group.hizuke}"></td>
-        <td th:text="${group.title}"></td>
-        <td th:text="${group.kaisi}"></td>
-        <td th:text="${group.owari}"></td>
-        <td><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></td>
-      </tr>
-    </tbody>
-  </table>
-  <a href="/home">もどる</a>
+  <div class="header">
+    <p class="logo">予定一覧</p>
+    <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
+  </div>
+  <div class="wrap">
+    <div class="calendar">
+      <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
+      <div class="list">
+        <div>
+          <span>　　日付　　</span>
+          <span>タイトル　</span>
+          <span>開始時刻</span>
+          <span>終了時刻</span>
+        </div>
+
+        <!-- <tbody id="schedule_list"> -->
+        <div th:each="group:${groupSchedules}">
+          <span th:text="${group.hizuke}"></span>
+          <span th:text="${group.title}"></span>
+          <span th:text="${group.kaisi}"></span>
+          <span th:text="${group.owari}"></span>
+          <span><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></span>
+        </div>
+        <!-- </tbody> -->
+      </div>
+    </div>
+  </div>
+  <a th:href="@{/home}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
 </body>
 
 </html>
