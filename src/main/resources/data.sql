@@ -19,14 +19,14 @@ INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('20
 INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-15','10:30','12:30',3,'タイトルC','本文3');
 INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-08-10','13:30','15:30',1,'タイトルD','本文4');
 
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-28','20:30','23:30',4,'11月28日','AAA');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-29','20:30','23:30',4,'11月29日','BBB');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-30','20:30','23:30',4,'11月30日','CCC');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-01','20:30','23:30',4,'12月1日','DDD');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-02','20:30','23:30',4,'12月2日','EEE');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-03','20:30','23:30',4,'12月3日','FFF');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-04','20:30','23:30',4,'12月4日','GGG');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-05','20:30','23:30',4,'12月5日','HHH');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-06','20:30','23:30',4,'12月6日','III');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-07','20:30','23:30',4,'12月7日','JJJ');
-INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-08','20:30','23:30',4,'12月8日','KKK');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-28','20:30','23:30',4,'11月28日の予定','AAA');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-29','20:30','23:30',4,'11月29日の予定','BBB');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-11-30','20:30','23:30',4,'11月30日の予定','CCC');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-01','20:30','23:30',4,'12月1日の予定','DDD');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-02','20:30','23:30',4,'12月2日の予定','EEE');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-03','20:30','23:30',4,'12月3日の予定','FFF');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-04','20:30','23:30',4,'12月4日の予定','GGG');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-05','20:30','23:30',4,'12月5日の予定','HHH');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-06','20:30','23:30',4,'12月6日の予定','III');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-07','20:30','23:30',4,'12月7日の予定','JJJ');
+INSERT INTO GroupSchedule (hizuke,kaisi,owari,Groupid,title,content) VALUES ('2023-12-08','20:30','23:30',4,'12月8日の予定','KKK');
