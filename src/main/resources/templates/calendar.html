@@ -11,11 +11,6 @@
     console.log(groupid);
     window.onload = function () {
       var sse = new EventSource('/calendar/update?id=' + groupid);
-      var time = new EventSource('/current_date');
-      sse.onmessage = function (event) {
-        console.log(event.data);
-        document.getElementById("time").textContent = event.data;
-      }
       sse.onmessage = function (event) {
         console.log(event.data);
         var schedule_list = JSON.parse(event.data);
@@ -36,6 +31,20 @@
       }
     }
   </script>
+  <script>
+    function showClock1() {
+      var nowTime = new Date();
+      var nowHour = nowTime.getHours();
+      var nowMin = nowTime.getMinutes();
+      var nowSec = nowTime.getSeconds();
+      var nowMonth = nowTime.getMonth();
+      var nowDay = nowTime.getDay();
+      // var msg = nowMonth + ":" + nowDay + ":" + nowHour + ":" + nowMin + ":" + nowSec + " です。";
+      var msg = nowTime;
+      document.getElementById("RealtimeClockArea").innerHTML = msg;
+    }
+    setInterval('showClock1()', 1000);
+  </script>
 </head>
 
 <body>
@@ -46,6 +55,7 @@
   <div class="wrap">
     <div class="calendar">
       <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
+      <p id="RealtimeClockArea"></p>
       <div class="list">
         <div>
           <span>　　日付　　</span>
@@ -67,11 +77,7 @@
     </div>
   </div>
   <a th:href="@{/home}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
-  <div id="current_date">
-    <script>
-      document.getElementById("current_date").innerHTML = Date();
-    </script>
-  </div>
+
 </body>
 
 </html>
