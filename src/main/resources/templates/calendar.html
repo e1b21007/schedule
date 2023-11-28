@@ -11,6 +11,11 @@
     console.log(groupid);
     window.onload = function () {
       var sse = new EventSource('/calendar/update?id=' + groupid);
+      var time = new EventSource('/current_date');
+      sse.onmessage = function (event) {
+        console.log(event.data);
+        document.getElementById("time").textContent = event.data;
+      }
       sse.onmessage = function (event) {
         console.log(event.data);
         var schedule_list = JSON.parse(event.data);
@@ -62,6 +67,11 @@
     </div>
   </div>
   <a th:href="@{/home}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
+  <div id="current_date">
+    <script>
+      document.getElementById("current_date").innerHTML = Date();
+    </script>
+  </div>
 </body>
 
 </html>

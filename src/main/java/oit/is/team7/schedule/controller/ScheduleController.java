@@ -162,4 +162,17 @@ public class ScheduleController {
     return emitter;
   }
 
+  @GetMapping("/current_date")
+  public SseEmitter asynctime() {
+
+    // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
+    final SseEmitter emitter = new SseEmitter();//
+    System.out.println("****************" + id);
+    this.asyncCalendar.getElementById(emitter, id);
+    document.getElementById("current_date").innerHTML = Date();
+
+    return emitter;
+  }
+
+
 }
