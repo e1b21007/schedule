@@ -16,18 +16,18 @@
         var schedule_list = JSON.parse(event.data);
         var schedule_table = "";
         for (var schedule of schedule_list) {
-          var bgn_tr = "<tr>";
-          var end_tr = "</tr>";
-          var date = "<td>" + schedule.hizuke + "</td>";
-          var title = "<td>" + schedule.title + "</td>";
-          var start_time = "<td>" + schedule.kaisi + "</td>";
-          var end_time = "<td>" + schedule.owari + "</td>";
-          var detail = "<td>" + "<a href='/detail?id=" + schedule.scheduleid + "'>詳細</a>" + "</td>"
+          var bgn_tr = "<div>";
+          var end_tr = "</div>";
+          var date = "<span>" + schedule.hizuke + "</span>";
+          var title = "<span>" + schedule.title + "</span>";
+          var start_time = "<span>" + schedule.kaisi + "</span>";
+          var end_time = "<span>" + schedule.owari + "</span>";
+          var detail = "<span>" + "<a href='/detail?id=" + schedule.scheduleid + "'>詳細</a>" + "</span>"
           schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + detail + end_tr;
         }
         console.log(schedule);
-        var tbody = document.getElementById("schedule_list");
-        tbody.innerHTML = schedule_table;
+        var div = document.getElementById("schedule_list");
+        div.innerHTML = schedule_table;
       }
     }
   </script>
@@ -49,15 +49,15 @@
           <span>終了時刻</span>
         </div>
 
-        <!-- <tbody id="schedule_list"> -->
-        <div th:each="group:${groupSchedules}">
-          <span th:text="${group.hizuke}"></span>
-          <span th:text="${group.title}"></span>
-          <span th:text="${group.kaisi}"></span>
-          <span th:text="${group.owari}"></span>
-          <span><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></span>
+        <div id="schedule_list">
+          <div th:each="group:${groupSchedules}">
+            <span th:text="${group.hizuke}"></span>
+            <span th:text="${group.title}"></span>
+            <span th:text="${group.kaisi}"></span>
+            <span th:text="${group.owari}"></span>
+            <span><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></span>
+          </div>
         </div>
-        <!-- </tbody> -->
       </div>
     </div>
   </div>
