@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -72,6 +73,12 @@ public class AsyncCalendar {
     }
     System.out.println("asyncCalendar complete");
   }
+  // @Async
+  // public void asyncTime(SseEmitter emitter) {
+  // Calendar calendar = Calendar.getInstance();
+  // System.out.println(calendar.getTime());
+  // emitter.send(calendar);
+  // }
 
   // @Async
   // public void count(SseEmitter emitter) throws IOException {
