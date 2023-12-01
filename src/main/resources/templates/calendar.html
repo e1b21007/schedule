@@ -30,20 +30,36 @@
         div.innerHTML = schedule_table;
       }
     }
+//    function compareTime() {
+//      const now = new Date();
+//      const groupSchedules = /*[[${groupSchedules}]]*/"groupSchedules";
+//      for (var groupSchedule of groupSchedules) {
+//        const start = new Date(groupSchedule.kaisi);
+//        const tomorrow = new Date();
+//        tomorrow.setDate(now.getDate() + 1);
+//        console.log("compareTime is working");
+//        if (tomorrow.getTime() >= start.getTime()) {
+//          const reminder = document.getElementById("reminder");
+//          reminder.innerHTML += "明日の予定があります" + groupSchedule.title;
+//       }
+//      }
+//    }
+//    setInterval('compareTime()', 1000);
   </script>
   <script>
-    function showClock1() {
+/*    function showClock1() {
       var nowTime = new Date();
-      var nowHour = nowTime.getHours();
-      var nowMin = nowTime.getMinutes();
-      var nowSec = nowTime.getSeconds();
-      var nowMonth = nowTime.getMonth();
-      var nowDay = nowTime.getDay();
+      //var nowHour = nowTime.getHours();
+      //var nowMin = nowTime.getMinutes();
+      //var nowSec = nowTime.getSeconds();
+      //var nowMonth = nowTime.getMonth();
+      //var nowDay = nowTime.getDay();
       // var msg = nowMonth + ":" + nowDay + ":" + nowHour + ":" + nowMin + ":" + nowSec + " です。";
       var msg = nowTime;
       document.getElementById("RealtimeClockArea").innerHTML = msg;
     }
     setInterval('showClock1()', 1000);
+*/
   </script>
 </head>
 
@@ -55,7 +71,7 @@
   <div class="wrap">
     <div class="calendar">
       <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
-      <p id="RealtimeClockArea"></p>
+      <!--<p id="reminder"></p>!-->
       <div class="list">
         <div>
           <span>　　日付　　</span>
