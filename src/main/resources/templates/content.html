@@ -12,12 +12,50 @@
 
   <script th:inline="javascript">
     const groupid = /*[[${groupSchedule.groupid}]]*/"groupid";
-    const schduleid = /*[[${groupSchedule.scheduleid}]]*/"scheduleid";
-    const deleteRequest = "/delete?id=" + schduleid + "&gid=" + groupid;
+    const scheduleid = /*[[${groupSchedule.scheduleid}]]*/"scheduleid";
+    const deleteRequest = "/delete?id=" + scheduleid + "&gid=" + groupid;
     function deleteSchedule() {
       const flag = confirm("本当に削除しますか？");
       if (flag === true) {
         location.href = deleteRequest;
+      }
+    }
+    window.onload = function () {
+      const sse = new EventSource('/detail/update?id=' + groupid);
+      sse.onmessage = function (event) {
+        const schedule_list = JSON.parse(event.data);
+        let schedule_table = "<tr><th>日付</th><th>タイトル</th><th>開始時刻</th><th>終了時刻</th></tr>"
+        for (let schedule of schedule_list) {
+          const bgn_tr = "<tr>";
+          const end_tr = "</tr>";
+          const date = "<td>" + schedule.hizuke + "</td>";
+          const title = "<td><a href=/detail?id=" + schedule.scheduleid + ">" + schedule.title + "</a></td>";
+          const start_time = "<td>" + schedule.kaisi + "</td>";
+          const end_time = "<td>" + schedule.owari + "</td>";
+          schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + end_tr;
+        }
+        const table_tag = document.getElementById("schedule_list")
+        table_tag.innerHTML = schedule_table;
+
+        let detail = "";
+        for (let schedule of schedule_list) {
+          if (schedule.scheduleid === scheduleid) {
+            const header = "<h2>イベントの詳細</h2><p>" + schedule.title + "を閲覧中です</p>" +
+                    "<button onclick='deleteSchedule()' class='right control-button dangerous-button'>" +
+                    "<span class='material-icons'>delete</span>削除</button>" +
+                    "<a href=/edit?id=" + schedule.scheduleid + " class='right control-button'>" +
+                    "<span class='material-icons'>edit</span>編集</a>";
+            const content = "<p>タイトル</p><p class='stored-item'>" + schedule.title + "</p>" +
+                    "<p>年月日</p><p class='stored-item'>" + schedule.hizuke + "</p>" +
+                    "<p>時間</p><p class='stored-item'>" + schedule.kaisi + "~" + schedule.owari + "</p>" +
+                    "<p>内容</p><p class='stored-item'>" + schedule.content + "</p>";
+            detail = header + content;
+          }
+        }
+
+        const div_tag = document.getElementById("detail");
+        div_tag.innerHTML = detail;
+        console.log(detail);
       }
     }
   </script>
@@ -31,7 +69,7 @@
   <div class="wrap">
     <div class="main">
       <div class="container main-content">
-        <div th:if="${edit_flag == null}">
+        <div id="detail" th:if="${edit_flag == null}">
           <h2>イベントの詳細</h2>
           <p>[[${groupSchedule.title}]]を閲覧中です</p>
           <button onclick="deleteSchedule()" class="right control-button dangerous-button">
@@ -82,7 +120,7 @@
       </div>
       <div class="schedule container">
         <h2>[[${group.groupname}]]の予定一覧</h2>
-        <table>
+        <table id="schedule_list">
           <tr>
             <th>日付</th>
             <th>タイトル</th>

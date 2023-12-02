@@ -151,12 +151,11 @@ public class ScheduleController {
     return "calendar.html";
   }
 
-  @GetMapping("/calendar/update")
+  @GetMapping({"/calendar/update", "/post/update", "/detail/update"})
   public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter();//
-    System.out.println("****************" + id);
     this.asyncCalendar.asyncGroupSchedule(emitter, id);
 
     return emitter;
