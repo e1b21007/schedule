@@ -5,6 +5,30 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="/css/form-style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script th:inline="javascript">
+        const groupid = /*[[${group.groupid}]]*/"groupid";
+        window.onload = function () {
+            const sse = new EventSource('/post/update?id=' + groupid);
+            sse.onmessage = function (event) {
+                const schedule_list = JSON.parse(event.data);
+                let schedule_table="<tr><th>日付</th><th>タイトル</th><th>開始時刻</th><th>終了時刻</th></tr>"
+                for (let schedule of schedule_list) {
+                    const bgn_tr = "<tr>";
+                    const end_tr = "</tr>";
+                    const date = "<td>" + schedule.hizuke + "</td>";
+                    const title = "<td><a href=/detail?id=" + schedule.scheduleid +  ">" + schedule.title + "</a></td>";
+                    const start_time = "<td>" + schedule.kaisi + "</td>";
+                    const end_time = "<td>" + schedule.owari + "</td>";
+                    schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + end_tr;
+                }
+                const div = document.getElementById("schedule_list")
+                div.innerHTML = schedule_table;
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="header">
@@ -37,7 +61,7 @@
         </div>
         <div class="schedule container">
             <h2>[[${group.groupname}]]の予定一覧</h2>
-            <table>
+            <table id="schedule_list">
                 <tr>
                     <th>日付</th>
                     <th>タイトル</th>
