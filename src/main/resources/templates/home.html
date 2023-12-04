@@ -14,17 +14,15 @@
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
   <div class="wrap">
-    <div class="main">
-      <div class="container group">
-        <div th:each="group:${groups}">
-          <p><b>
-              <a th:href="@{/calendar(id=${group.groupid})}">
-                [[${group.groupname}]]
-              </a>
-            </b>
-          </p>
-        </div>
+    <div class="main_home">
+      <div th:each="group:${groups}">
+        <p class="container group">
+          <a th:href="@{/calendar(id=${group.groupid})}">
+            [[${group.groupname}]]
+          </a>
+        </p>
       </div>
+
     </div>
   </div>
 

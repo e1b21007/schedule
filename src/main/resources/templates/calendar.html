@@ -65,22 +65,27 @@
 
 <body>
   <div class="header">
-    <p class="logo">予定一覧</p>
+    <a th:href="@{/home}" class="logo">home</a>
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
+  </div>
+
+  <div class="main2">
+    <b>予定一覧</b>
+
+    <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
+    <p id="RealtimeClockArea"></p>
   </div>
   <div class="wrap">
     <div class="calendar">
-      <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
       <!--<p id="reminder"></p>!-->
       <div class="list">
-        <div>
-          <span>　　日付　　</span>
-          <span>タイトル　</span>
-          <span>開始時刻</span>
-          <span>終了時刻</span>
+        <div class="th"><b>
+            <span>　日付　　　</span>
+            <span>タイトル</span>
+            <span>開始時刻</span>
+            <span>終了時刻</span></b>
         </div>
-
-        <div id="schedule_list">
+        <div class="td" id="schedule_list">
           <div th:each="group:${groupSchedules}">
             <span th:text="${group.hizuke}"></span>
             <span th:text="${group.title}"></span>
@@ -92,7 +97,7 @@
       </div>
     </div>
   </div>
-  <a th:href="@{/home}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
+  <a th:href="@{/home}"><span class="material-icons">arrow_back</span>グループ選択に戻る</a>
 
 </body>
 
