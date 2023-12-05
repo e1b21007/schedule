@@ -73,19 +73,12 @@ public class AsyncCalendar {
     }
     System.out.println("asyncCalendar complete");
   }
-
-  @Async
-  public void asyncTime(SseEmitter emitter) {
-    Calendar calendar = Calendar.getInstance();
-    System.out.println(calendar.getTime());
-    String test = "test";
-    try {
-      emitter.send(calendar);  
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
-    
-  }
+  // @Async
+  // public void asyncTime(SseEmitter emitter) {
+  // Calendar calendar = Calendar.getInstance();
+  // System.out.println(calendar.getTime());
+  // emitter.send(calendar);
+  // }
 
   // @Async
   // public void count(SseEmitter emitter) throws IOException {
