@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -76,15 +78,22 @@ public class AsyncCalendar {
 
   @Async
   public void asyncTime(SseEmitter emitter, int id) {
-    ZonedDateTime now = ZonedDateTime.now();
+    ZonedDateTime now;
+    LocalDate localDate;
+    Date nowDate;
     String test = "test";
     try {
-      while(true) {
-        emitter.send(now);  
+      while (true) {
+        now = ZonedDateTime.now();
+        localDate = now.toLocalDate();
+        nowDate = Date.valueOf(localDate);
+        emitter.send(nowDate);
         ArrayList<GroupSchedule> schedule_list = groupschedulemapper.selectgroupScheduleByGroupid(id);
         for (GroupSchedule schedule : schedule_list) {
-          if (schedule.getKaisi().equals(now.toString())) {
+          if (schedule.getHizuke().equals(now.toString())) {
+
           }
+          if(nowDate.compareTo(schedule.getHizuke())){}
         }
         TimeUnit.SECONDS.sleep(1);
       }
@@ -94,7 +103,7 @@ public class AsyncCalendar {
     } finally {
       emitter.complete();
     }
-    
+
   }
 
   // @Async

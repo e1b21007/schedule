@@ -1,8 +1,10 @@
 package oit.is.team7.schedule.model;
 
+import java.util.Date;
+
 public class GroupSchedule {
     private int scheduleid;
-    private String hizuke;
+    private Date hizuke;
     private String kaisi;
     private String owari;
     private int groupid;
@@ -17,11 +19,11 @@ public class GroupSchedule {
         this.scheduleid = id;
     }
 
-    public String getHizuke() {
+    public Date getHizuke() {
         return this.hizuke;
     }
 
-    public void setHizuke(String hizuke) {
+    public void setHizuke(Date hizuke) {
         this.hizuke = hizuke;
     }
 
