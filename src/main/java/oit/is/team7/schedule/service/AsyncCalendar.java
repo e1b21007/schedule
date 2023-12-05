@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -75,14 +75,24 @@ public class AsyncCalendar {
   }
 
   @Async
-  public void asyncTime(SseEmitter emitter) {
-    Calendar calendar = Calendar.getInstance();
-    System.out.println(calendar.getTime());
+  public void asyncTime(SseEmitter emitter, int id) {
+    ZonedDateTime now = ZonedDateTime.now();
     String test = "test";
     try {
-      emitter.send(calendar);  
+      while(true) {
+        emitter.send(now);  
+        ArrayList<GroupSchedule> schedule_list = groupschedulemapper.selectgroupScheduleByGroupid(id);
+        for (GroupSchedule schedule : schedule_list) {
+          if (schedule.getKaisi().equals(now.toString())) {
+          }
+        }
+        TimeUnit.SECONDS.sleep(1);
+      }
     } catch (Exception e) {
       // TODO: handle exception
+      System.out.println(e.getMessage());
+    } finally {
+      emitter.complete();
     }
     
   }

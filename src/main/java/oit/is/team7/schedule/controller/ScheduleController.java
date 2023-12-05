@@ -162,11 +162,12 @@ public class ScheduleController {
   }
 
   @GetMapping("/current_date")
-  public SseEmitter asynctime() {
+  public SseEmitter asynctime(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter();//
-    this.asyncCalendar.asyncTime(emitter);
+    this.asyncCalendar.asyncTime(emitter , id);
+
     return emitter;
   }
 
