@@ -10,6 +10,13 @@
     const groupid = /*[[${groupid}]]*/"groupid";
     console.log(groupid);
     window.onload = function () {
+      var timeSse = new EventSource('/current_date' + "?id=" + groupid);
+      timeSse.onmessage = function(event){
+        var calendar = JSON.parse(event.data);
+        console.log(event.data);
+        console.log(calendar);
+        
+      }
       var sse = new EventSource('/calendar/update?id=' + groupid);
       sse.onmessage = function (event) {
         console.log(event.data);

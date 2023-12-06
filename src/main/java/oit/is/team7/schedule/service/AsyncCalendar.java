@@ -11,6 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -73,12 +77,43 @@ public class AsyncCalendar {
     }
     System.out.println("asyncCalendar complete");
   }
-  // @Async
-  // public void asyncTime(SseEmitter emitter) {
-  // Calendar calendar = Calendar.getInstance();
-  // System.out.println(calendar.getTime());
-  // emitter.send(calendar);
-  // }
+
+  @Async
+  public void asyncTime(SseEmitter emitter, int id) {
+    ZonedDateTime now;
+    LocalDate localDate;
+    Date nowDate;
+    String test = "test";
+    Date date = new Date();
+    try {
+      while (true) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.setTimeZone(TimeZone.getTimeZone("GMT-9"));
+        emitter.send(c);
+        TimeUnit.SECONDS.sleep(1);
+        // now = ZonedDateTime.now();
+        // localDate = now.toLocalDate();
+        // nowDate = Date.valueOf(localDate);
+        // emitter.send(nowDate);
+        // ArrayList<GroupSchedule> schedule_list =
+        // groupschedulemapper.selectgroupScheduleByGroupid(id);
+        // for (GroupSchedule schedule : schedule_list) {
+        // if (schedule.getHizuke().equals(now.toString())) {
+
+        // }
+        // if(nowDate.compareTo(schedule.getHizuke())){}
+        // }
+        // TimeUnit.SECONDS.sleep(1);
+      }
+    } catch (Exception e) {
+      // TODO: handle exception
+      System.out.println(e.getMessage());
+    } finally {
+      emitter.complete();
+    }
+
+  }
 
   // @Async
   // public void count(SseEmitter emitter) throws IOException {
