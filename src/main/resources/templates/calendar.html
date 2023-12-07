@@ -15,7 +15,7 @@
         var calendar = JSON.parse(event.data);
         console.log(event.data);
         console.log(calendar);
-        
+
       }
       var sse = new EventSource('/calendar/update?id=' + groupid);
       sse.onmessage = function (event) {

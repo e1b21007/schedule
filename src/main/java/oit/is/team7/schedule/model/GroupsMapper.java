@@ -8,22 +8,24 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
-public interface GroupMapper {
+public interface GroupsMapper {
   /**
    * groupidからgroupnameを取得する
    *
    * @param groupid int グループID
    * @return ArrayList<entry> groupid-useridのリスト
    */
-  @Select("SELECT GROUPNAME FROM GROUPS WHERE GROUPID = #{groupid}")
+  @Select("SELECT GROUPNAME FROM GROUPS WHERE GROUPID = #{getGroupname(groupid)}")
   String selectGroupNameByGroupid(int groupid);
 
   @Select("SELECT GROUPID, GROUPNAME FROM GROUPS where GROUPID = #{groupid}")
-  Group selectSgroupByGroupid(int groupid);
+  Groups selectSgroupByGroupid(int groupid);
 
   @Select("SELECT  GROUPID, GROUPNAME FROM GROUPS WHERE  GROUPID = #{groupid}")
-  ArrayList<Group> selectGroupByGroupid(int groupid);
+  ArrayList<Groups> selectGroupByGroupid(int groupid);
 
+  @Select("SELECT MAX(GROUPID), FROM (SELECT GROUPID FROM GROUPS WHERE GROUPNAME = #{groupname})")
+  int selectMaxGroupByGroupname(String groupname);
 
   /**
    * groupTableを取得する
@@ -31,5 +33,15 @@ public interface GroupMapper {
    * @return ArrayList<group> groupid-groupnameのリスト
    */
   @Select("SELECT GROUPID, GROUPNAME FROM GROUPS")
-  ArrayList<Group> selectAllSgroup();
+  ArrayList<Groups> selectAllSgroup();
+
+  /**
+   * groupのインサート文
+   *
+   * @param group Groups グループ
+   */
+  @Insert("INSERT INTO Groups (groupname) VALUES (#{groupname})")
+  @Options(useGeneratedKeys = true, keyColumn = "groupid")
+  void InsertGroupbyGroup(Groups group);
+
 }

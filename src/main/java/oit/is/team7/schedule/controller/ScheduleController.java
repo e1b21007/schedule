@@ -1,7 +1,7 @@
 package oit.is.team7.schedule.controller;
 
-import oit.is.team7.schedule.model.Group;
-import oit.is.team7.schedule.model.GroupMapper;
+import oit.is.team7.schedule.model.Groups;
+import oit.is.team7.schedule.model.GroupsMapper;
 import oit.is.team7.schedule.model.GroupSchedule;
 import oit.is.team7.schedule.model.GroupScheduleMapper;
 import oit.is.team7.schedule.model.Entry;
@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Controller
 public class ScheduleController {
   @Autowired
-  GroupMapper groupmapper;
+  GroupsMapper groupmapper;
   @Autowired
   GroupScheduleMapper groupschedulemapper;
   @Autowired
@@ -46,7 +46,7 @@ public class ScheduleController {
 
   @GetMapping("/post")
   public String post(@RequestParam Integer id, ModelMap model) {
-    Group group = groupmapper.selectSgroupByGroupid(id);
+    Groups group = groupmapper.selectSgroupByGroupid(id);
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
     model.addAttribute("group", group);
     model.addAttribute("groupSchedules", scheduleList);
@@ -63,7 +63,7 @@ public class ScheduleController {
 
     this.asyncCalendar.syncInsertSchedule(id, title, date, start, end, content);
     ArrayList<GroupSchedule> scheduleList = asyncCalendar.syncShowGroupSchedule(id);
-    Group group = groupmapper.selectSgroupByGroupid(id);
+    Groups group = groupmapper.selectSgroupByGroupid(id);
 
     model.addAttribute("group", group);
     model.addAttribute("groupSchedules", scheduleList);
@@ -77,7 +77,7 @@ public class ScheduleController {
     String username = prin.getName();
     User user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
-    ArrayList<Group> entryGroup = new ArrayList<>();
+    ArrayList<Groups> entryGroup = new ArrayList<>();
 
     for (Entry entry : entries) {
       if (entry.getUserid() == user.getUserid()) {
@@ -96,7 +96,7 @@ public class ScheduleController {
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper
         .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
-    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
     model.addAttribute("scheduleList", scheduleList);
@@ -108,7 +108,7 @@ public class ScheduleController {
   public String edit(@RequestParam Integer id, ModelMap model) {
     boolean edit_flag = true;
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper
         .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
 
@@ -129,7 +129,7 @@ public class ScheduleController {
       ModelMap model) {
     this.asyncCalendar.syncUpdateSchedule(id, date, title, start, end, content);
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    Group group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+    Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper
         .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     model.addAttribute("groupSchedule", groupSchedule);
@@ -169,6 +169,58 @@ public class ScheduleController {
     this.asyncCalendar.asyncTime(emitter , id);
 
     return emitter;
+  }
+
+  @GetMapping("/newgroup")
+  public String newgroup(Principal prin, ModelMap model) {
+    boolean newgroupflag = true;
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+    ArrayList<Groups> entryGroup = new ArrayList<>();
+    ArrayList<User> alluser = usermapper.selectAllByUsers();
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+        System.out.println(entry.getGroupid());
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
+    model.addAttribute("newgroupflag", newgroupflag);
+    model.addAttribute("allusers", alluser);
+
+    return "home.html";
+  }
+
+  @PostMapping("/makenewgroup")
+  public String makenewgroup(Principal prin, ModelMap model, @RequestParam String[] imputUsers, String newGroupName) {
+    Groups newgroup = new Groups();
+    newgroup.setGroupname(newGroupName);
+    int imputuser;
+    groupmapper.InsertGroupbyGroup(newgroup);
+    int newgroupid = groupmapper.selectMaxGroupByGroupname(newGroupName);
+    System.out.println(newgroup.getGroupid());
+    for (String stringuser : imputUsers) {
+          System.out.println(stringuser);
+          imputuser = Integer.parseInt(stringuser);
+          entrymapper.InsertEntry(imputuser, newgroupid);
+    }
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+    ArrayList<Groups> entryGroup = new ArrayList<>();
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
+
+    return "home.html";
   }
 
 }

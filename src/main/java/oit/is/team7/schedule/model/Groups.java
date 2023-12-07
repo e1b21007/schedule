@@ -1,11 +1,11 @@
 package oit.is.team7.schedule.model;
 
-public class Group {
+public class Groups {
     private int groupid;
     private String groupname;
 
     public int getGroupid() {
-        return this.groupid;
+        return groupid;
     }
 
     public void setGroupid(int id) {
@@ -13,7 +13,7 @@ public class Group {
     }
 
     public String getGroupname() {
-        return this.groupname;
+        return groupname;
     }
 
     public void setGroupname(String name) {
