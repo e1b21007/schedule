@@ -8,13 +8,33 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script th:inline="javascript">
     const groupid = /*[[${groupid}]]*/"groupid";
-    console.log(groupid);
     window.onload = function () {
-      var timeSse = new EventSource('/current_date' + "?id=" + groupid);
+      const timeSse = new EventSource('/current_date' + "?id=" + groupid);
       timeSse.onmessage = function(event){
-        var calendar = JSON.parse(event.data);
-        console.log(event.data);
-        console.log(calendar);
+        const remainders = JSON.parse(event.data);
+
+        let header = "";
+        let content = "";
+        
+        for (let remainder of remainders) {
+          const hours = Math.floor(remainder.remainingMinutes / 60);
+          const minutes = remainder.remainingMinutes % 60;
+
+          if (hours <= 0 && minutes <= 0) {
+            const list = "<li>" + remainder.schedule.title + "が進行中です" + "</li>";
+            content += list;
+            continue;
+          }
+
+          const list = "<li>" + remainder.schedule.title + "があと" + hours + "時間" + minutes +   "分で始まります</li>";
+          content +=  list;
+        }
+        if(content !== "") {
+          header = "<h3>24時間以内の予定があります。</h3>"
+        }
+
+        const remainder_tag = document.getElementById("remainder");
+        remainder_tag.innerHTML = header + "<ul>" + content + "</ul>";
         
       }
       var sse = new EventSource('/calendar/update?id=' + groupid);
@@ -32,41 +52,10 @@
           var detail = "<span>" + "<a href='/detail?id=" + schedule.scheduleid + "'>詳細</a>" + "</span>"
           schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + detail + end_tr;
         }
-        console.log(schedule);
         var div = document.getElementById("schedule_list");
         div.innerHTML = schedule_table;
       }
     }
-//    function compareTime() {
-//      const now = new Date();
-//      const groupSchedules = /*[[${groupSchedules}]]*/"groupSchedules";
-//      for (var groupSchedule of groupSchedules) {
-//        const start = new Date(groupSchedule.kaisi);
-//        const tomorrow = new Date();
-//        tomorrow.setDate(now.getDate() + 1);
-//        console.log("compareTime is working");
-//        if (tomorrow.getTime() >= start.getTime()) {
-//          const reminder = document.getElementById("reminder");
-//          reminder.innerHTML += "明日の予定があります" + groupSchedule.title;
-//       }
-//      }
-//    }
-//    setInterval('compareTime()', 1000);
-  </script>
-  <script>
-/*    function showClock1() {
-      var nowTime = new Date();
-      //var nowHour = nowTime.getHours();
-      //var nowMin = nowTime.getMinutes();
-      //var nowSec = nowTime.getSeconds();
-      //var nowMonth = nowTime.getMonth();
-      //var nowDay = nowTime.getDay();
-      // var msg = nowMonth + ":" + nowDay + ":" + nowHour + ":" + nowMin + ":" + nowSec + " です。";
-      var msg = nowTime;
-      document.getElementById("RealtimeClockArea").innerHTML = msg;
-    }
-    setInterval('showClock1()', 1000);
-*/
   </script>
 </head>
 
@@ -80,11 +69,11 @@
     <b>予定一覧</b>
 
     <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
-    <p id="RealtimeClockArea"></p>
   </div>
   <div class="wrap">
     <div class="calendar">
-      <!--<p id="reminder"></p>!-->
+      <div id="remainder">
+      </div>
       <div class="list">
         <div class="th"><b>
             <span>　日付　　　</span>
