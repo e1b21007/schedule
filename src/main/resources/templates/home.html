@@ -22,27 +22,26 @@
           </a>
         </p>
       </div>
+    </div>
+    <div th:if="${newgroupflag == null}">
+      <a href="/newgroup" class="button"><span class="material-icons">newgroup</span>新しくグループを作る</a>
+    </div>
+    <div th:if="${newgroupflag}">
+      <form method="post" th:action="@{/makenewgroup}" class="add_group">
+        <legend>参加させるユーザー</legend>
+        <div th:each="user:${allusers}">
+          <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}" checked />
+          <label for="[[${user.username}]]">[[${user.username}]]</label>
+        </div>
+
+        <p>グループ名を入力して下さい</p>
+        <label>
+          <input type="text" name="newGroupName" />
+        </label>
+        <input type="submit" value="変更" />
+      </form>
 
     </div>
-  </div>
-  <div th:if="${newgroupflag == null}">
-    <a href="/newgroup" class="button"><span class="material-icons">newgroup</span>新しくグループを作る</a>
-  </div>
-  <div th:if="${newgroupflag}">
-    <form method="post" th:action="@{/makenewgroup}">
-      <legend>参加させるユーザー</legend>
-      <div th:each="user:${allusers}">
-        <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}" checked />
-        <label for="[[${user.username}]]">[[${user.username}]]</label>
-      </div>
-
-      <p>グループ名を入力して下さい</p>
-      <label>
-        <input type="text" name="newGroupName"/>
-      </label>
-      <input type="submit" value="変更" />
-    </form>
-
   </div>
 </body>
 
