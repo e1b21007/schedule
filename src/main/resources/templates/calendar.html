@@ -11,30 +11,30 @@
     window.onload = function () {
       const timeSse = new EventSource('/current_date' + "?id=" + groupid);
       timeSse.onmessage = function(event){
-        const remainders = JSON.parse(event.data);
+        const reminders = JSON.parse(event.data);
 
         let header = "";
         let content = "";
         
-        for (let remainder of remainders) {
-          const hours = Math.floor(remainder.remainingMinutes / 60);
-          const minutes = remainder.remainingMinutes % 60;
+        for (let reminder of remainders) {
+          const hours = Math.floor(reminder.remainingMinutes / 60);
+          const minutes = reminder.remainingMinutes % 60;
 
           if (hours <= 0 && minutes <= 0) {
-            const list = "<li>" + remainder.schedule.title + "が進行中です" + "</li>";
+            const list = "<li>" + reminder.schedule.title + "が進行中です" + "</li>";
             content += list;
             continue;
           }
 
-          const list = "<li>" + remainder.schedule.title + "があと" + hours + "時間" + minutes +   "分で始まります</li>";
+          const list = "<li>" + reminder.schedule.title + "があと" + hours + "時間" + minutes +   "分で始まります</li>";
           content +=  list;
         }
         if(content !== "") {
           header = "<h3>24時間以内の予定があります。</h3>"
         }
 
-        const remainder_tag = document.getElementById("remainder");
-        remainder_tag.innerHTML = header + "<ul>" + content + "</ul>";
+        const reminder_tag = document.getElementById("remainder");
+        reminder_tag.innerHTML = header + "<ul>" + content + "</ul>";
         
       }
       var sse = new EventSource('/calendar/update?id=' + groupid);
@@ -72,7 +72,7 @@
   </div>
   <div class="wrap">
     <div class="calendar">
-      <div id="remainder">
+      <div id="reminder">
       </div>
       <div class="list">
         <div class="th"><b>
