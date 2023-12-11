@@ -45,12 +45,12 @@
                 <label><input type="text" name="title" placeholder="タイトル" required/></label>
                 <p>年月日</p>
                 <label>
-                    <input type="date" name="date" value="2020-01-01" required/>
+                    <input type="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                 </label>
                 <p>時間</p>
                 <label>
-                    <input type="time" name="start" value="00:00" required/> ~
-                    <input type="time" name="end" value="00:00" required/>
+                    <input type="time" name="start" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required/> ~
+                    <input type="time" name="end" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required/>
                 </label>
                 <p>内容</p>
                 <label>
