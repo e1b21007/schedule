@@ -1,6 +1,7 @@
 package oit.is.team7.schedule.service;
 
 import oit.is.team7.schedule.model.GroupScheduleMapper;
+import oit.is.team7.schedule.model.Reminder;
 import oit.is.team7.schedule.model.GroupSchedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.format.DateTimeFormatter;
+import java.time.Duration;
+import java.time.ZoneId;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -80,17 +81,34 @@ public class AsyncCalendar {
 
   @Async
   public void asyncTime(SseEmitter emitter, int id) {
-    ZonedDateTime now;
-    LocalDate localDate;
-    Date nowDate;
-    String test = "test";
-    Date date = new Date();
+
     try {
       while (true) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.setTimeZone(TimeZone.getTimeZone("GMT-9"));
-        emitter.send(c);
+        // Get current time in Japan
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+
+        ArrayList<GroupSchedule> schedule_list = groupschedulemapper.selectgroupScheduleByGroupid(id);
+        ArrayList<Reminder> reminders = new ArrayList<>();
+
+
+        for (GroupSchedule schedule : schedule_list) {
+          String sc_date = schedule.getHizuke();
+          String sc_start = schedule.getKaisi();
+          String sc_end = schedule.getOwari();
+
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+          ZonedDateTime scheduleStartTime = ZonedDateTime.parse(sc_date + " " + sc_start, formatter.withZone(ZoneId.of("Asia/Tokyo")));
+          ZonedDateTime scheduleEndTime = ZonedDateTime.parse(sc_date + " " + sc_end, formatter.withZone(ZoneId.of("Asia/Tokyo")));
+
+          Duration duration = Duration.between(now, scheduleStartTime);
+          long minutes = duration.toMinutes();
+
+          if (scheduleEndTime.isAfter(now) && minutes < 1440) {
+            reminders.add(new Reminder(schedule, minutes));
+          }
+        }
+
+        emitter.send(reminders);
         TimeUnit.SECONDS.sleep(1);
         // now = ZonedDateTime.now();
         // localDate = now.toLocalDate();
@@ -107,7 +125,6 @@ public class AsyncCalendar {
         // TimeUnit.SECONDS.sleep(1);
       }
     } catch (Exception e) {
-      // TODO: handle exception
       System.out.println(e.getMessage());
     } finally {
       emitter.complete();
@@ -131,3 +148,4 @@ public class AsyncCalendar {
   // }
 
 }
+
