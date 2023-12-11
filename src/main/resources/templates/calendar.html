@@ -11,6 +11,7 @@
     window.onload = function () {
       const timeSse = new EventSource('/current_date' + "?id=" + groupid);
       timeSse.onmessage = function(event){
+
         const reminders = JSON.parse(event.data);
 
         let header = "";
