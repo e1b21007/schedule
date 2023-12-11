@@ -1,7 +1,7 @@
 package oit.is.team7.schedule.service;
 
 import oit.is.team7.schedule.model.GroupScheduleMapper;
-import oit.is.team7.schedule.model.Remainder;
+import oit.is.team7.schedule.model.Reminder;
 import oit.is.team7.schedule.model.GroupSchedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +88,7 @@ public class AsyncCalendar {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
 
         ArrayList<GroupSchedule> schedule_list = groupschedulemapper.selectgroupScheduleByGroupid(id);
-        ArrayList<Remainder> remainders = new ArrayList<>();
+        ArrayList<Reminder> reminders = new ArrayList<>();
 
 
         for (GroupSchedule schedule : schedule_list) {
@@ -104,11 +104,11 @@ public class AsyncCalendar {
           long minutes = duration.toMinutes();
 
           if (scheduleEndTime.isAfter(now) && minutes < 1440) {
-            remainders.add(new Remainder(schedule, minutes));
+            reminders.add(new Reminder(schedule, minutes));
           }
         }
 
-        emitter.send(remainders);
+        emitter.send(reminders);
         TimeUnit.SECONDS.sleep(1);
         // now = ZonedDateTime.now();
         // localDate = now.toLocalDate();

@@ -1,10 +1,10 @@
 package oit.is.team7.schedule.model;
 
-public class Remainder {
+public class Reminder {
     private GroupSchedule schedule;
     private long remainingMinutes;
 
-    public Remainder(GroupSchedule schedule, long minutes) {
+    public Reminder(GroupSchedule schedule, long minutes) {
         this.schedule = schedule;
         this.remainingMinutes = minutes;
     }

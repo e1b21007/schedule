@@ -16,7 +16,7 @@
         let header = "";
         let content = "";
         
-        for (let reminder of remainders) {
+        for (let reminder of reminders) {
           const hours = Math.floor(reminder.remainingMinutes / 60);
           const minutes = reminder.remainingMinutes % 60;
 
@@ -33,7 +33,7 @@
           header = "<h3>24時間以内の予定があります。</h3>"
         }
 
-        const reminder_tag = document.getElementById("remainder");
+        const reminder_tag = document.getElementById("reminder");
         reminder_tag.innerHTML = header + "<ul>" + content + "</ul>";
         
       }
@@ -45,6 +45,7 @@
         for (var schedule of schedule_list) {
           var bgn_tr = "<div>";
           var end_tr = "</div>";
+          var reminder = "<span>" + schedule.reminder + "</span>";
           var date = "<span>" + schedule.hizuke + "</span>";
           var title = "<span>" + schedule.title + "</span>";
           var start_time = "<span>" + schedule.kaisi + "</span>";
