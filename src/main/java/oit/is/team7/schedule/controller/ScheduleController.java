@@ -112,7 +112,7 @@ public class ScheduleController {
       return "content.html";
     }
     model.addAttribute("groupid", groupid);
-    return "delate.html";
+    return "delete.html";
   }
 
   @GetMapping("/edit")
