@@ -10,13 +10,13 @@
     const groupid = /*[[${groupid}]]*/"groupid";
     window.onload = function () {
       const timeSse = new EventSource('/current_date' + "?id=" + groupid);
-      timeSse.onmessage = function(event){
+      timeSse.onmessage = function (event) {
 
         const reminders = JSON.parse(event.data);
 
         let header = "";
         let content = "";
-        
+
         for (let reminder of reminders) {
           const hours = Math.floor(reminder.remainingMinutes / 60);
           const minutes = reminder.remainingMinutes % 60;
@@ -27,16 +27,16 @@
             continue;
           }
 
-          const list = "<li>" + reminder.schedule.title + "があと" + hours + "時間" + minutes +   "分で始まります</li>";
-          content +=  list;
+          const list = "<li>" + reminder.schedule.title + "があと" + hours + "時間" + minutes + "分で始まります</li>";
+          content += list;
         }
-        if(content !== "") {
+        if (content !== "") {
           header = "<h3>24時間以内の予定があります。</h3>"
         }
 
         const reminder_tag = document.getElementById("reminder");
         reminder_tag.innerHTML = header + "<ul>" + content + "</ul>";
-        
+
       }
       var sse = new EventSource('/calendar/update?id=' + groupid);
       sse.onmessage = function (event) {
@@ -51,7 +51,7 @@
           var title = "<span>" + schedule.title + "</span>";
           var start_time = "<span>" + schedule.kaisi + "</span>";
           var end_time = "<span>" + schedule.owari + "</span>";
-          var detail = "<span>" + "<a href='/detail?id=" + schedule.scheduleid + "'>詳細</a>" + "</span>"
+          var detail = "<span>" + "<a href='/detail?id=" + schedule.scheduleid + "&groupid=" + groupid + "'>詳細</a>" + "</span>"
           schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + detail + end_tr;
         }
         var div = document.getElementById("schedule_list");
@@ -89,7 +89,7 @@
             <span th:text="${group.title}"></span>
             <span th:text="${group.kaisi}"></span>
             <span th:text="${group.owari}"></span>
-            <span><a th:href="@{/detail(id=${group.scheduleid})}">詳細</a></span>
+            <span><a th:href="@{/detail?id=${group.Scheduleid}&groupid=${groupid}}">詳細</a></span>
           </div>
         </div>
       </div>
