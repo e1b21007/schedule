@@ -100,20 +100,38 @@ public class ScheduleController {
   }
 
   @GetMapping("/detail")
-  public String content(@RequestParam Integer id, ModelMap model, Principal prin) {
-    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
-        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
-    Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+  public String content(@RequestParam Integer id, @RequestParam Integer groupid, ModelMap model, Principal prin) {
+    int flag = 0;
+    int groupallschedule[] = groupschedulemapper.selectScheduleidByGroupid(groupid);
+    GroupSchedule checkScheduleId = groupschedulemapper.getgroupScheduleByScheduleid(id);
 
-    if (!checkUser(prin, groupSchedule.getGroupid())) {
+    for (int scheduleid : groupallschedule) {
+      if (scheduleid == id) {
+        flag = 1;
+      }
+    }
+
+    if (!checkUser(prin, groupid)) {
       return "accessError";
     }
-    model.addAttribute("group", group);
-    model.addAttribute("groupSchedule", groupSchedule);
-    model.addAttribute("scheduleList", scheduleList);
+    // if (!checkUser(prin, checkScheduleId.getGroupid())) {
+    // return "accessError";
+    // }
 
-    return "content.html";
+    if (flag == 1) {
+      GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+      ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+          .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+      Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+
+      model.addAttribute("group", group);
+      model.addAttribute("groupSchedule", groupSchedule);
+      model.addAttribute("scheduleList", scheduleList);
+
+      return "content.html";
+    }
+    model.addAttribute("groupid", groupid);
+    return "delete.html";
   }
 
   @GetMapping("/edit")
@@ -235,10 +253,10 @@ public class ScheduleController {
     return "home.html";
   }
 
-  private boolean checkUser(Principal prin, int id) {
+  private boolean checkUser(Principal prin, int groupid) {
     String username = prin.getName();
     User user = usermapper.selectByname(username);
-    ArrayList<Entry> entries = entrymapper.selectEntryByGroupid(id);
+    ArrayList<Entry> entries = entrymapper.selectEntryByGroupid(groupid);
 
     for (Entry entry : entries) {
       if (entry.getUserid() == user.getUserid()) {
