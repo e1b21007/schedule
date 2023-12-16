@@ -2,23 +2,34 @@
 
 body {
   font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  margin-top: 100px;
+  text-align: center;
+  padding: 0;
+}
+
+.top-page {
   background-image: url('/images/background.jpg');
   background-repeat: repeat;
+}
+
+.error-body {
   background-color: #f7f7f7;
-  text-align: center;
-  margin-top: 100px;
-  padding: 0;
 }
 
 h1 {
   color: #4285f4;
-  font-size: 2em;
-  margin-top: 20px;
+  margin-top: 5px;
+  font-size: 4em;
+  font-weight: bold;
+  margin: 0;
 }
 
 p {
   color: #666;
   font-size: 1.2em;
+  margin-top: 5px;
+  margin-bottom: auto;
 }
 
 a {
@@ -44,4 +55,18 @@ img {
   margin-top: 30px;
   margin-left: 30px;
   margin-right: 30px;
+}
+
+.error-container {
+  text-align: center;
+}
+
+.error-code {
+  color: crimson;
+  font-size: 6em;
+}
+
+.error-message {
+  font-size: 1.5em;
+  margin-top: 20px;
 }

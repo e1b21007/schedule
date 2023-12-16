@@ -35,7 +35,11 @@ public class ScheduleController {
   AsyncCalendar asyncCalendar;
 
   @GetMapping("/calendar")
-  public String calendar(@RequestParam Integer id, ModelMap model) {
+  public String calendar(@RequestParam Integer id, ModelMap model, Principal prin) {
+    if (!checkUser(prin, id)) {
+      return "accessError";
+    }
+
     ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(id);
 
     model.addAttribute("groupSchedules", groupSchedules);
@@ -45,7 +49,11 @@ public class ScheduleController {
   }
 
   @GetMapping("/post")
-  public String post(@RequestParam Integer id, ModelMap model) {
+  public String post(@RequestParam Integer id, ModelMap model, Principal prin) {
+    if (!checkUser(prin, id)) {
+      return "accessError";
+    }
+
     Groups group = groupmapper.selectSgroupByGroupid(id);
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper.selectgroupScheduleByGroupid(id);
     model.addAttribute("group", group);
@@ -92,11 +100,15 @@ public class ScheduleController {
   }
 
   @GetMapping("/detail")
-  public String content(@RequestParam Integer id, ModelMap model) {
+  public String content(@RequestParam Integer id, ModelMap model, Principal prin) {
     GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
     ArrayList<GroupSchedule> scheduleList = groupschedulemapper
         .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
     Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+
+    if (!checkUser(prin, groupSchedule.getGroupid())) {
+      return "accessError";
+    }
     model.addAttribute("group", group);
     model.addAttribute("groupSchedule", groupSchedule);
     model.addAttribute("scheduleList", scheduleList);
@@ -151,7 +163,7 @@ public class ScheduleController {
     return "calendar.html";
   }
 
-  @GetMapping({"/calendar/update", "/post/update", "/detail/update"})
+  @GetMapping({ "/calendar/update", "/post/update", "/detail/update" })
   public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
@@ -166,7 +178,7 @@ public class ScheduleController {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter();//
-    this.asyncCalendar.asyncTime(emitter , id);
+    this.asyncCalendar.asyncTime(emitter, id);
 
     return emitter;
   }
@@ -203,9 +215,9 @@ public class ScheduleController {
     int newgroupid = groupmapper.selectMaxGroupByGroupname(newGroupName);
     System.out.println(newgroup.getGroupid());
     for (String stringuser : imputUsers) {
-          System.out.println(stringuser);
-          imputuser = Integer.parseInt(stringuser);
-          entrymapper.InsertEntry(imputuser, newgroupid);
+      System.out.println(stringuser);
+      imputuser = Integer.parseInt(stringuser);
+      entrymapper.InsertEntry(imputuser, newgroupid);
     }
     String username = prin.getName();
     User user = usermapper.selectByname(username);
@@ -223,4 +235,16 @@ public class ScheduleController {
     return "home.html";
   }
 
+  private boolean checkUser(Principal prin, int id) {
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByGroupid(id);
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
