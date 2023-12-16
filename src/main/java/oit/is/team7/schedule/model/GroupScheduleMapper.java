@@ -22,6 +22,15 @@ public interface GroupScheduleMapper {
   ArrayList<GroupSchedule> selectgroupScheduleByGroupid(int groupid);
 
   /**
+   * groupidからscheduleidのリストを取得する
+   *
+   * @param groupid int グループID
+   * @return int[] Scheduleidのリスト
+   */
+  @Select("SELECT scheduleid FROM groupSchedule WHERE GROUPID = #{groupid} ORDER BY scheduleid")
+  int[] selectScheduleidByGroupid(int groupid);
+
+  /**
    * scheduleidからgroupScheduleを取得する
    *
    * @param scheduleid int スケジュールid

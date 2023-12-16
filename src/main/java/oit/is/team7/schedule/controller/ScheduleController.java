@@ -92,16 +92,27 @@ public class ScheduleController {
   }
 
   @GetMapping("/detail")
-  public String content(@RequestParam Integer id, ModelMap model) {
-    GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
-    ArrayList<GroupSchedule> scheduleList = groupschedulemapper
-        .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
-    Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
-    model.addAttribute("group", group);
-    model.addAttribute("groupSchedule", groupSchedule);
-    model.addAttribute("scheduleList", scheduleList);
+  public String content(@RequestParam Integer id, @RequestParam Integer groupid, ModelMap model) {
+    int flag = 0;
+    int groupallschedule[] = groupschedulemapper.selectScheduleidByGroupid(groupid);
+    for (int scheduleid : groupallschedule) {
+      if (scheduleid == id) {
+        flag = 1;
+      }
+    }
+    if (flag == 1) {
+      GroupSchedule groupSchedule = groupschedulemapper.getgroupScheduleByScheduleid(id);
+      ArrayList<GroupSchedule> scheduleList = groupschedulemapper
+          .selectgroupScheduleByGroupid(groupSchedule.getGroupid());
+      Groups group = groupmapper.selectSgroupByGroupid(groupSchedule.getGroupid());
+      model.addAttribute("group", group);
+      model.addAttribute("groupSchedule", groupSchedule);
+      model.addAttribute("scheduleList", scheduleList);
 
-    return "content.html";
+      return "content.html";
+    }
+    model.addAttribute("groupid", groupid);
+    return "delete.html";
   }
 
   @GetMapping("/edit")
@@ -151,7 +162,7 @@ public class ScheduleController {
     return "calendar.html";
   }
 
-  @GetMapping({"/calendar/update", "/post/update", "/detail/update"})
+  @GetMapping({ "/calendar/update", "/post/update", "/detail/update" })
   public SseEmitter asyncCalendar(@RequestParam Integer id) {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
@@ -166,7 +177,7 @@ public class ScheduleController {
 
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter();//
-    this.asyncCalendar.asyncTime(emitter , id);
+    this.asyncCalendar.asyncTime(emitter, id);
 
     return emitter;
   }
@@ -203,9 +214,9 @@ public class ScheduleController {
     int newgroupid = groupmapper.selectMaxGroupByGroupname(newGroupName);
     System.out.println(newgroup.getGroupid());
     for (String stringuser : imputUsers) {
-          System.out.println(stringuser);
-          imputuser = Integer.parseInt(stringuser);
-          entrymapper.InsertEntry(imputuser, newgroupid);
+      System.out.println(stringuser);
+      imputuser = Integer.parseInt(stringuser);
+      entrymapper.InsertEntry(imputuser, newgroupid);
     }
     String username = prin.getName();
     User user = usermapper.selectByname(username);

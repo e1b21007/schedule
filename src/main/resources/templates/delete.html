@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>home</title>
+  <link rel="stylesheet" href="/css/form-style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+  <div class="header">
+    <p class="logo">選択した予定は削除されました</p>
+    <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
+  </div>
+  <div class="wrap">
+    <a th:href="@{/calendar(id=${groupid})}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
+
+  </div>
+</body>
+
+</html>
