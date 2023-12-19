@@ -54,6 +54,23 @@
         <input type="submit" value="削除" />
       </form>
     </div>
+    <div th:if="${entryGroupFlag == null}">
+      <a href="/entryGroupFlag">グループの削除</a>
+    </div>
+<!--    <div th:if="${entryGroupFlag}">
+      <form method="post" th:action="@{/entryGroup}">
+        <div th:each="group:${groups}">
+          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
+        </div>
+        <div th:each="user:${nowEntryUsers}">
+          <input type="radio" th:value="${user.userid}" name="selectedUser"  checked/>[[${group.groupname}]]
+        </div>
+        <div th:each="user:${notEntryUsers}">
+          <input type="radio" th:value="${user.userid}" name="selectedUser" />[[${group.groupname}]]
+        </div>
+        <input type="submit" value="変更" />
+      </form>
+    </div>-->
   </div>
 </body>
 
