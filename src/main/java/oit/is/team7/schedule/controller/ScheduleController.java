@@ -265,4 +265,46 @@ public class ScheduleController {
     }
     return false;
   }
+
+  @GetMapping("/deleteGroupFlag")
+  public String deleteGroupFlag(ModelMap model, Principal prin) {
+    boolean deleteGroupFlag = true;
+    ArrayList<Groups> entryGroup = new ArrayList<>();
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+        System.out.println(entry.getGroupid());
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
+    model.addAttribute("deleteGroupFlag", deleteGroupFlag);
+    return "home.html";
+  }
+
+  @PostMapping("/deleteGroup")
+  public String deleteGroup(@RequestParam String selectedGroup, Principal prin, ModelMap model) {
+    entrymapper.DeleteEntryByGroupId(Integer.parseInt(selectedGroup));
+    groupschedulemapper.DeleteGroupScheduleByGroupId(Integer.parseInt(selectedGroup));
+    groupmapper.DeleteGroupByGroupid(Integer.parseInt(selectedGroup));
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+    ArrayList<Groups> entryGroup = new ArrayList<>();
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+        System.out.println(entry.getGroupid());
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
+
+    return "home.html";
+  }
 }
