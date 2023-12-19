@@ -29,7 +29,7 @@
           const bgn_tr = "<tr>";
           const end_tr = "</tr>";
           const date = "<td>" + schedule.hizuke + "</td>";
-          const title = "<td><a href=/detail?id=" + schedule.scheduleid + ">" + schedule.title + "</a></td>";
+          const title = "<td><a href=/detail?id=" + schedule.scheduleid + "&groupid=" + schedule.groupid + ">" + schedule.title + "</a></td>";
           const start_time = "<td>" + schedule.kaisi + "</td>";
           const end_time = "<td>" + schedule.owari + "</td>";
           schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + end_tr;
@@ -129,7 +129,7 @@
           </tr>
           <tr th:each="schedule:${scheduleList}">
             <td th:text="${schedule.hizuke}"></td>
-            <td><a th:href="@{/detail(id=${schedule.scheduleid})}">[[${schedule.title}]]</a></td>
+            <td><a th:href="@{/detail(id=${schedule.scheduleid},groupid=${schedule.groupid})}">[[${schedule.title}]]</a></td>
             <td th:text="${schedule.kaisi}"></td>
             <td th:text="${schedule.owari}"></td>
           </tr>
