@@ -79,4 +79,13 @@ public interface GroupScheduleMapper {
   @Delete("DELETE FROM GroupSchedule WHERE ScheduleId = #{ScheduleId};")
   void DeleteGroupScheduleByScheduleId(int ScheduleId);
 
+  /**
+   * groupScheduleのDelete文
+   *
+   * @param GroupId int グループID
+   * @return void
+   */
+  @Delete("DELETE FROM GroupSchedule WHERE GroupId = #{GroupId};")
+  void DeleteGroupScheduleByGroupId(int GroupId);
+
 }

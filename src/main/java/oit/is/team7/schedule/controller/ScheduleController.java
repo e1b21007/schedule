@@ -288,6 +288,8 @@ public class ScheduleController {
 
   @PostMapping("/deleteGroup")
   public String deleteGroup(@RequestParam String selectedGroup, Principal prin, ModelMap model) {
+    entrymapper.DeleteEntryByGroupId(Integer.parseInt(selectedGroup));
+    groupschedulemapper.DeleteGroupScheduleByGroupId(Integer.parseInt(selectedGroup));
     groupmapper.DeleteGroupByGroupid(Integer.parseInt(selectedGroup));
     String username = prin.getName();
     User user = usermapper.selectByname(username);

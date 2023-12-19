@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Delete;
 
 @Mapper
 public interface EntryMapper {
@@ -39,5 +40,8 @@ public interface EntryMapper {
      */
     @Select("SELECT USERID, GROUPID FROM ENTRY")
     ArrayList<Entry> selectAllEntry();
+
+    @Delete("Delete From Entry Where GroupId = #{GroupId};")
+    void DeleteEntryByGroupId(int GroupId);
 
 }
