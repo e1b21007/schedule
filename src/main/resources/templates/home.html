@@ -49,7 +49,7 @@
     <div th:if="${deleteGroupFlag}">
       <form method="post" th:action="@{/deleteGroup}">
         <div th:each="group:${groups}">
-          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />
+          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
         </div>
         <input type="submit" value="削除" />
       </form>

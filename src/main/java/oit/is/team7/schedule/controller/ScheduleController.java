@@ -287,8 +287,21 @@ public class ScheduleController {
   }
 
   @PostMapping("/deleteGroup")
-  public String deleteGroup(@RequestParam int selectedGroup) {
-    groupmapper.deleteById(selectedGroup);
+  public String deleteGroup(@RequestParam String selectedGroup, Principal prin, ModelMap model) {
+    groupmapper.DeleteGroupByGroupid(Integer.parseInt(selectedGroup));
+    String username = prin.getName();
+    User user = usermapper.selectByname(username);
+    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
+    ArrayList<Groups> entryGroup = new ArrayList<>();
+
+    for (Entry entry : entries) {
+      if (entry.getUserid() == user.getUserid()) {
+        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
+        System.out.println(entry.getGroupid());
+      }
+    }
+
+    model.addAttribute("groups", entryGroup);
 
     return "home.html";
   }

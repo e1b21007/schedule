@@ -45,7 +45,8 @@ public interface GroupsMapper {
   @Options(useGeneratedKeys = true, keyColumn = "groupid")
   void InsertGroupbyGroup(Groups group);
 
-  @Delete("Delete from Groups where groupid=(#{groupid})")
-  void deleteById(int groupid);
+  @Delete("DELETE FROM GROUPS WHERE GROUPID = #{groupid}")
+  void DeleteGroupByGroupid(int groupid);
+
 
 }
