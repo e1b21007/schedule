@@ -23,6 +23,7 @@
         </p>
       </div>
     </div>
+
     <div th:if="${newgroupflag == null}">
       <a href="/newgroup" class="button"><span class="material-icons">newgroup</span>新しくグループを作る</a>
     </div>
@@ -40,7 +41,18 @@
         </label>
         <input type="submit" value="変更" />
       </form>
+    </div>
 
+    <div th:if="${deleteGroupFlag == null}">
+      <a href="/deleteGroupFlag">グループの削除</a>
+    </div>
+    <div th:if="${deleteGroupFlag}">
+      <form method="post" th:action="@{/deleteGroup}">
+        <div th:each="group:${groups}">
+          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />
+        </div>
+        <input type="submit" value="削除" />
+      </form>
     </div>
   </div>
 </body>

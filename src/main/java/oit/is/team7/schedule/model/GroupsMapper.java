@@ -2,6 +2,7 @@ package oit.is.team7.schedule.model;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -43,5 +44,8 @@ public interface GroupsMapper {
   @Insert("INSERT INTO Groups (groupname) VALUES (#{groupname})")
   @Options(useGeneratedKeys = true, keyColumn = "groupid")
   void InsertGroupbyGroup(Groups group);
+
+  @Delete("Delete from Groups where groupid=(#{groupid})")
+  void deleteById(int groupid);
 
 }
