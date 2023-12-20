@@ -7,16 +7,38 @@
   <link rel="stylesheet" href="/css/form-style.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-  <input type="radio" id="myRadioButton" onclick="myFunction()">
 
-  <script>
-    function myFunction() {
-      // ここに実行したいコードを書く
-      const Http = new XMLHttpRequest();
-      const url = 'https://jsonplaceholder.typicode.com/posts';
-      Http.open("GET", url);
-      Http.send();
-      alert('ラジオボタンがクリックされました！');
+  <script th:inline="javascript">
+    function toggleButton(id) {
+      const button = document.getElementById(id);
+      if (button.style.display === "none") {
+        button.style.display = "block";
+      } else {
+        button.style.display = "none";
+      }
+    }
+
+    function getMemberList() {
+      const groupid = document.querySelector('#groupEdit input[name="groupid"]:checked').value;
+      const url = '/home/update/group?id=' + groupid;
+      const eventSource =  new EventSource(url);
+      console.log("execute getMemberList");
+      eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+
+        const allUsers = Array.from(document.querySelectorAll('#groupEdit input[type="checkbox"]'));
+        const button = document.querySelector('#groupEdit [type="submit"]');
+
+        allUsers.forEach(function(userCheckbox) {
+          userCheckbox.disabled = false;
+          button.disabled = false;
+          const isMember = data.members.some(function(member) {
+            return member.userid === parseInt(userCheckbox.value);
+          });
+          userCheckbox.checked = isMember;
+        });
+        eventSource.close();
+      }
     }
   </script>
 </head>
@@ -67,21 +89,16 @@
         <input type="submit" value="削除" />
       </form>
     </div>
-    <div th:if="${entryGroupFlag == null}">
-      <a href="/entryGroupFlag">グループの削除</a>
-    </div>
-    <div th:if="${entryGroupFlag}">
-      <form method="post" th:action="@{/entryGroup}">
+    <button onclick="toggleButton('groupEdit')">グループの変更</button>
+    <div id="groupEdit" style="display: none;">
+      <form method="post" th:action="@{/home/update/group}">
         <div th:each="group:${groups}">
-          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
+          <input type="radio" th:value="${group.groupid}" name="groupid" onclick="getMemberList()"/>[[${group.groupname}]]
         </div>
-        <div th:each="user:${nowEntryUsers}">
-          <input type="radio" th:value="${user.userid}" name="selectedUser" checked />[[${group.groupname}]]
+        <div th:each="user:${allusers}" id="groupEntry">
+          <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled/>[[${user.username}]]
         </div>
-        <div th:each="user:${notEntryUsers}">
-          <input type="radio" th:value="${user.userid}" name="selectedUser" />[[${group.groupname}]]
-        </div>
-        <input type="submit" value="変更" />
+        <input type="submit" value="変更" disabled/>
       </form>
     </div>
   </div>
