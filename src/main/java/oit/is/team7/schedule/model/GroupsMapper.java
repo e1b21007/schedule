@@ -34,15 +34,23 @@ public interface GroupsMapper {
    *
    * @return ArrayList<group> groupid-groupnameのリスト
    */
-  @Select("SELECT GROUPID, GROUPNAME FROM GROUPS")
+  @Select("SELECT GROUPID, GROUPNAME, USERID FROM GROUPS")
   ArrayList<Groups> selectAllSgroup();
+
+  /**
+   * groupTableを取得する
+   * @parm int userid 管理者id
+   * @return ArrayList<group> userid の管理するグループのリスト
+   */
+  @Select("SELECT GROUPID, GROUPNAME, USERID FROM GROUPS Where userid = #{userid}")
+  ArrayList<Groups> selectAdminSgroup(int userid);
 
   /**
    * groupのインサート文
    *
    * @param group Groups グループ
    */
-  @Insert("INSERT INTO Groups (groupname) VALUES (#{groupname})")
+  @Insert("INSERT INTO Groups (groupname,userid) VALUES (#{groupname},#{userid})")
   @Options(useGeneratedKeys = true, keyColumn = "groupid")
   void InsertGroupbyGroup(Groups group);
 
