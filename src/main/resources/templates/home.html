@@ -6,6 +6,41 @@
   <title>home</title>
   <link rel="stylesheet" href="/css/form-style.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
+  <script th:inline="javascript">
+    function toggleButton(id) {
+      const button = document.getElementById(id);
+      if (button.style.display === "none") {
+        button.style.display = "block";
+      } else {
+        button.style.display = "none";
+      }
+    }
+
+    function getMemberList() {
+      const groupid = document.querySelector('#groupEdit input[name="groupid"]:checked').value;
+      const url = '/home/update/group?id=' + groupid;
+      const eventSource =  new EventSource(url);
+      console.log("execute getMemberList");
+      eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+
+        const allUsers = Array.from(document.querySelectorAll('#groupEdit input[type="checkbox"]'));
+        const button = document.querySelector('#groupEdit [type="submit"]');
+
+        allUsers.forEach(function(userCheckbox) {
+          userCheckbox.disabled = false;
+          button.disabled = false;
+          const isMember = data.members.some(function(member) {
+            return member.userid === parseInt(userCheckbox.value);
+          });
+          userCheckbox.checked = isMember;
+        });
+        eventSource.close();
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -52,6 +87,18 @@
           <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
         </div>
         <input type="submit" value="削除" />
+      </form>
+    </div>
+    <button onclick="toggleButton('groupEdit')">グループの変更</button>
+    <div id="groupEdit" style="display: none;">
+      <form method="post" th:action="@{/home/update/group}">
+        <div th:each="group:${groups}">
+          <input type="radio" th:value="${group.groupid}" name="groupid" onclick="getMemberList()"/>[[${group.groupname}]]
+        </div>
+        <div th:each="user:${allusers}" id="groupEntry">
+          <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled/>[[${user.username}]]
+        </div>
+        <input type="submit" value="変更" disabled/>
       </form>
     </div>
   </div>

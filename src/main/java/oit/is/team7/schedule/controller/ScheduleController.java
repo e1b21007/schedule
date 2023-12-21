@@ -10,8 +10,11 @@ import oit.is.team7.schedule.model.User;
 import oit.is.team7.schedule.model.UserMapper;
 import oit.is.team7.schedule.service.AsyncCalendar;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ScheduleController {
@@ -86,6 +90,7 @@ public class ScheduleController {
     User user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
+    ArrayList<User> allusers = usermapper.selectAllByUsers();
 
     for (Entry entry : entries) {
       if (entry.getUserid() == user.getUserid()) {
@@ -95,6 +100,7 @@ public class ScheduleController {
     }
 
     model.addAttribute("groups", entryGroup);
+    model.addAttribute("allusers", allusers);
 
     return "home.html";
   }
@@ -208,7 +214,7 @@ public class ScheduleController {
     User user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
-    ArrayList<User> alluser = usermapper.selectAllByUsers();
+    ArrayList<User> allusers = usermapper.selectAllByUsers();
 
     for (Entry entry : entries) {
       if (entry.getUserid() == user.getUserid()) {
@@ -219,13 +225,14 @@ public class ScheduleController {
 
     model.addAttribute("groups", entryGroup);
     model.addAttribute("newgroupflag", newgroupflag);
-    model.addAttribute("allusers", alluser);
+    model.addAttribute("allusers", allusers);
 
     return "home.html";
   }
 
   @PostMapping("/makenewgroup")
   public String makenewgroup(Principal prin, ModelMap model, @RequestParam String[] imputUsers, String newGroupName) {
+    ArrayList<User> alluser = usermapper.selectAllByUsers();
     Groups newgroup = new Groups();
     newgroup.setGroupname(newGroupName);
     int imputuser;
@@ -249,6 +256,8 @@ public class ScheduleController {
     }
 
     model.addAttribute("groups", entryGroup);
+
+    model.addAttribute("allusers", alluser);
 
     return "home.html";
   }
@@ -307,4 +316,51 @@ public class ScheduleController {
 
     return "home.html";
   }
+
+  @GetMapping("/home/update/group")
+  SseEmitter GroupUpdate(@RequestParam Integer id) {
+    final SseEmitter emitter = new SseEmitter();
+    ArrayList<Entry> groupEntries = entrymapper.selectEntryByGroupid(id);
+    ArrayList<User> users = usermapper.selectAllByUsers();
+    ArrayList<User> members = new ArrayList<>();
+
+    for (User user: users) {
+      for (Entry entry: groupEntries) {
+        if (user.getUserid() == entry.getUserid()) {
+          members.add(user);
+          break;
+        }
+      }
+    }
+
+    try {
+      Map<String, ArrayList<User>> data = new HashMap<>();
+      data.put("members", members);
+      emitter.send(data);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return emitter;
+  }
+  @PostMapping("/home/update/group")
+  public String GroupUpdate(@RequestParam int groupid, @RequestParam(required=false) int[] groupusers, ModelMap model) {
+    ArrayList<User> allusers = usermapper.selectAllByUsers();
+
+    entrymapper.DeleteEntryByGroupId(groupid);
+    if(groupusers == null) {
+      return "redirect:/home";
+    }
+
+    for (User user: allusers) {
+      for (int id: groupusers) {
+        if(user.getUserid() == id) {
+          entrymapper.InsertEntry(id, groupid);
+        }
+      }
+    }
+
+    return "redirect:/home";
+  }
+
 }
