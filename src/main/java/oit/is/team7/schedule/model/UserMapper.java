@@ -21,4 +21,8 @@ public interface UserMapper {
   // ユーザ全員の情報をとってくる
   @Select("select * from users")
   ArrayList<User> selectAllByUsers();
+
+  // 他ユーザー全員の情報をとってくる
+  @Select("select * from users where userid != #{userid}")
+  ArrayList<User> selectOtherByUserid(int userid);
 }

@@ -3,10 +3,10 @@ INSERT INTO Users (username) VALUES ('user2');
 INSERT INTO Users (username) VALUES ('user3');
 INSERT INTO Users (username) VALUES ('user4');
 
-INSERT INTO Groups (GroupName) VALUES ('Group1');
-INSERT INTO Groups (GroupName) VALUES ('Group2');
-INSERT INTO Groups (GroupName) VALUES ('Group3');
-INSERT INTO Groups (GroupName) VALUES ('リマインダーテスト用');
+INSERT INTO Groups (GroupName,userid) VALUES ('Group1',1);
+INSERT INTO Groups (GroupName,userid) VALUES ('Group2',2);
+INSERT INTO Groups (GroupName,userid) VALUES ('Group3',2);
+INSERT INTO Groups (GroupName,userid) VALUES ('リマインダーテスト用',4);
 
 INSERT INTO Entry (userid,Groupid) VALUES (1,1);
 INSERT INTO Entry (userid,Groupid) VALUES (2,2);

@@ -5,7 +5,9 @@ CREATE TABLE Users (
 
 CREATE TABLE Groups (
     Groupid IDENTITY,
-    GroupName VARCHAR NOT NULL
+    GroupName VARCHAR NOT NULL,
+    userid int,
+    FOREIGN KEY(userid) REFERENCES Users
 );
 
 CREATE TABLE Entry (

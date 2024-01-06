@@ -65,9 +65,8 @@
     <div th:if="${newgroupflag}">
       <form method="post" th:action="@{/makenewgroup}" class="add_group">
         <legend>参加させるユーザー</legend>
-        <div th:each="user:${allusers}">
-          <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}" checked />
-          <label for="[[${user.username}]]">[[${user.username}]]</label>
+        <div th:each="user:${otherusers}">
+          <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}" checked />[[${user.username}]]
         </div>
 
         <p>グループ名を入力して下さい</p>
@@ -83,7 +82,7 @@
     </div>
     <div th:if="${deleteGroupFlag}">
       <form method="post" th:action="@{/deleteGroup}">
-        <div th:each="group:${groups}">
+        <div th:each="group:${AdminGroup}">
           <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
         </div>
         <input type="submit" value="削除" />
@@ -92,10 +91,10 @@
     <button onclick="toggleButton('groupEdit')">グループの変更</button>
     <div id="groupEdit" style="display: none;">
       <form method="post" th:action="@{/home/update/group}">
-        <div th:each="group:${groups}">
+        <div th:each="group:${AdminGroup}">
           <input type="radio" th:value="${group.groupid}" name="groupid" onclick="getMemberList()"/>[[${group.groupname}]]
         </div>
-        <div th:each="user:${allusers}" id="groupEntry">
+        <div th:each="user:${otherusers}" id="groupEntry">
           <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled/>[[${user.username}]]
         </div>
         <input type="submit" value="変更" disabled/>
