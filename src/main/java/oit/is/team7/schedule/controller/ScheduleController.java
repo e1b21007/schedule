@@ -6,7 +6,7 @@ import oit.is.team7.schedule.model.GroupSchedule;
 import oit.is.team7.schedule.model.GroupScheduleMapper;
 import oit.is.team7.schedule.model.Entry;
 import oit.is.team7.schedule.model.EntryMapper;
-import oit.is.team7.schedule.model.User;
+import oit.is.team7.schedule.model.Users;
 import oit.is.team7.schedule.model.UserMapper;
 import oit.is.team7.schedule.service.AsyncCalendar;
 
@@ -87,10 +87,10 @@ public class ScheduleController {
   @GetMapping("/home")
   public String home(Principal prin, ModelMap model) {
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
+    Users user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
-    ArrayList<User> allusers = usermapper.selectAllByUsers();
+    ArrayList<Users> allusers = usermapper.selectAllByUsers();
     for (Entry entry : entries) {
       if (entry.getUserid() == user.getUserid()) {
         entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
@@ -98,13 +98,12 @@ public class ScheduleController {
       }
     }
 
-
     model.addAttribute("groups", entryGroup);
     model.addAttribute("allusers", allusers);
 
-    //グループの編集用追加箇所
+    // グループの編集用追加箇所
     ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<User> otherusers = usermapper.selectOtherByUserid(user.getUserid());
+    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
     AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
     model.addAttribute("otherusers", otherusers);
     model.addAttribute("AdminGroup", AdminGroups);
@@ -218,7 +217,7 @@ public class ScheduleController {
   public String newgroup(Principal prin, ModelMap model) {
     boolean newgroupflag = true;
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
+    Users user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
 
@@ -232,9 +231,9 @@ public class ScheduleController {
     model.addAttribute("groups", entryGroup);
     model.addAttribute("newgroupflag", newgroupflag);
 
-    //グループの編集用追加箇所
+    // グループの編集用追加箇所
     ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<User> otherusers = usermapper.selectOtherByUserid(user.getUserid());
+    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
     AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
     model.addAttribute("otherusers", otherusers);
     model.addAttribute("AdminGroup", AdminGroups);
@@ -244,12 +243,12 @@ public class ScheduleController {
 
   @PostMapping("/makenewgroup")
   public String makenewgroup(Principal prin, ModelMap model, @RequestParam String[] imputUsers, String newGroupName) {
-    ArrayList<User> alluser = usermapper.selectAllByUsers();
+    ArrayList<Users> alluser = usermapper.selectAllByUsers();
     Groups newgroup = new Groups();
     newgroup.setGroupname(newGroupName);
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
-    newgroup.setUserid(user.getUserid());//グループ作成者を管理者に設定
+    Users user = usermapper.selectByname(username);
+    newgroup.setUserid(user.getUserid());// グループ作成者を管理者に設定
     int imputuser;
     groupmapper.InsertGroupbyGroup(newgroup);
     int newgroupid = groupmapper.selectMaxGroupByGroupname(newGroupName);
@@ -257,7 +256,7 @@ public class ScheduleController {
       imputuser = Integer.parseInt(stringuser);
       entrymapper.InsertEntry(imputuser, newgroupid);
     }
-      entrymapper.InsertEntry(user.getUserid(), newgroupid);
+    entrymapper.InsertEntry(user.getUserid(), newgroupid);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
 
@@ -270,9 +269,9 @@ public class ScheduleController {
     model.addAttribute("groups", entryGroup);
     model.addAttribute("allusers", alluser);
 
-    //グループの編集用追加箇所
+    // グループの編集用追加箇所
     ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<User> otherusers = usermapper.selectOtherByUserid(user.getUserid());
+    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
     AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
     model.addAttribute("otherusers", otherusers);
     model.addAttribute("AdminGroup", AdminGroups);
@@ -282,7 +281,7 @@ public class ScheduleController {
 
   private boolean checkUser(Principal prin, int groupid) {
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
+    Users user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByGroupid(groupid);
 
     for (Entry entry : entries) {
@@ -298,7 +297,7 @@ public class ScheduleController {
     boolean deleteGroupFlag = true;
     ArrayList<Groups> entryGroup = new ArrayList<>();
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
+    Users user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
 
     for (Entry entry : entries) {
@@ -311,9 +310,9 @@ public class ScheduleController {
     model.addAttribute("groups", entryGroup);
     model.addAttribute("deleteGroupFlag", deleteGroupFlag);
 
-    //グループの編集用追加箇所
+    // グループの編集用追加箇所
     ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<User> otherusers = usermapper.selectOtherByUserid(user.getUserid());
+    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
     AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
     model.addAttribute("otherusers", otherusers);
     model.addAttribute("AdminGroup", AdminGroups);
@@ -326,7 +325,7 @@ public class ScheduleController {
     groupschedulemapper.DeleteGroupScheduleByGroupId(Integer.parseInt(selectedGroup));
     groupmapper.DeleteGroupByGroupid(Integer.parseInt(selectedGroup));
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
+    Users user = usermapper.selectByname(username);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
     ArrayList<Groups> entryGroup = new ArrayList<>();
 
@@ -339,9 +338,9 @@ public class ScheduleController {
 
     model.addAttribute("groups", entryGroup);
 
-    //グループの編集用追加箇所
+    // グループの編集用追加箇所
     ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<User> otherusers = usermapper.selectOtherByUserid(user.getUserid());
+    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
     AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
     model.addAttribute("otherusers", otherusers);
     model.addAttribute("AdminGroup", AdminGroups);
@@ -352,11 +351,11 @@ public class ScheduleController {
   SseEmitter GroupUpdate(@RequestParam Integer id) {
     final SseEmitter emitter = new SseEmitter();
     ArrayList<Entry> groupEntries = entrymapper.selectEntryByGroupid(id);
-    ArrayList<User> users = usermapper.selectAllByUsers();
-    ArrayList<User> members = new ArrayList<>();
+    ArrayList<Users> users = usermapper.selectAllByUsers();
+    ArrayList<Users> members = new ArrayList<>();
 
-    for (User user: users) {
-      for (Entry entry: groupEntries) {
+    for (Users user : users) {
+      for (Entry entry : groupEntries) {
         if (user.getUserid() == entry.getUserid()) {
           members.add(user);
           break;
@@ -365,7 +364,7 @@ public class ScheduleController {
     }
 
     try {
-      Map<String, ArrayList<User>> data = new HashMap<>();
+      Map<String, ArrayList<Users>> data = new HashMap<>();
       data.put("members", members);
       emitter.send(data);
     } catch (Exception e) {
@@ -374,16 +373,18 @@ public class ScheduleController {
 
     return emitter;
   }
+
   @PostMapping("/home/update/group")
-  public String GroupUpdate(@RequestParam int groupid, @RequestParam(required=false) int[] groupusers, ModelMap model, Principal prin) {
-    ArrayList<User> allusers = usermapper.selectAllByUsers();
+  public String GroupUpdate(@RequestParam int groupid, @RequestParam(required = false) int[] groupusers, ModelMap model,
+      Principal prin) {
+    ArrayList<Users> allusers = usermapper.selectAllByUsers();
 
     entrymapper.DeleteEntryByGroupId(groupid);
-    if(groupusers == null) {
+    if (groupusers == null) {
       return "redirect:/home";
     }
 
-    for (User user : allusers) {
+    for (Users user : allusers) {
       for (int id : groupusers) {
         if (user.getUserid() == id) {
           entrymapper.InsertEntry(id, groupid);
@@ -392,10 +393,15 @@ public class ScheduleController {
     }
 
     String username = prin.getName();
-    User user = usermapper.selectByname(username);
-    entrymapper.InsertEntry(user.getUserid(), groupid);//管理者=操作者のエントリー
+    Users user = usermapper.selectByname(username);
+    entrymapper.InsertEntry(user.getUserid(), groupid);// 管理者=操作者のエントリー
 
     return "redirect:/home";
   }
 
 }
+
+/*
+ * シンボルUsersをAccountのものに変更する
+ * →userMapperをAccountMapperのものに変更する
+ */

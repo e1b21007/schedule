@@ -1,6 +1,7 @@
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     userid IDENTITY,
-    userName VARCHAR NOT NULL
+    userName VARCHAR(128) NOT NULL,
+    userPass VARCHAR(512)
 );
 
 CREATE TABLE Groups (
