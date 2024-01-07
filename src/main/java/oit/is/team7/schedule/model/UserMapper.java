@@ -12,17 +12,21 @@ public interface UserMapper {
 
   // 一致するidの情報をとってくる
   @Select("select * from users where userid = #{id}")
-  User selectById(int id);
+  Users selectById(int id);
 
   // 一致する名前の情報をとってくる
   @Select("select * from users where username = #{name}")
-  User selectByname(String name);
+  Users selectByname(String name);
 
   // ユーザ全員の情報をとってくる
   @Select("select * from users")
-  ArrayList<User> selectAllByUsers();
+  ArrayList<Users> selectAllByUsers();
 
   // 他ユーザー全員の情報をとってくる
   @Select("select * from users where userid != #{userid}")
-  ArrayList<User> selectOtherByUserid(int userid);
+  ArrayList<Users> selectOtherByUserid(int userid);
+
+  @Insert("INSERT INTO users (username) VALUES (#{userName})")
+  @Options(useGeneratedKeys = true, keyColumn = "userid")
+  void InsertUser(String userName);
 }

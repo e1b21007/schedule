@@ -1,7 +1,7 @@
-INSERT INTO Users (username) VALUES ('user1');
-INSERT INTO Users (username) VALUES ('user2');
-INSERT INTO Users (username) VALUES ('user3');
-INSERT INTO Users (username) VALUES ('user4');
+INSERT INTO Users (userName, userPass) VALUES ('user1','$2y$10$DPZvoBEzZrecXwgAhq/69OoHbWam2Kq0taE9gXsEHJ4q9yRzGtvHO');
+INSERT INTO Users (userName, userPass) VALUES ('user2','$2y$10$SbWZIjsMBTtJ6SaG34GxauRrl7rD7YBKDQihnvmwaoEU/Q0kYy4ae');
+INSERT INTO Users (userName, userPass) VALUES ('user3','$2y$10$bifSQsD6CxLgDfbvmdJi5.MArojBdtczVtBMqwr6F3PaCFoXO7s26');
+INSERT INTO Users (userName, userPass) VALUES ('user4','$2y$10$qBTq8Ku0XpEA.MlHdbgMz.AocTZOc53q1TMb1mUP.vmK73vgkPTkO');
 
 INSERT INTO Groups (GroupName,userid) VALUES ('Group1',1);
 INSERT INTO Groups (GroupName,userid) VALUES ('Group2',2);
