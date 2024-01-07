@@ -10,10 +10,13 @@
 
 <body>
   <div class="header">
-    <p class="logo">選択した予定は削除されました</p>
+    <a th:href="@{/home}" class="logo">Schedule</a>
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
+
   <div class="wrap">
+    <p class="error-message">選択した予定は削除されました</p>
+    </br>
     <a th:href="@{/calendar(id=${groupid})}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
 
   </div>

@@ -62,11 +62,11 @@
 </head>
 
 <body>
+
   <div class="header">
-    <a th:href="@{/home}" class="logo">home</a>
+    <a th:href="@{/home}" class="logo">Schedule</a>
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
-
   <div class="main2">
     <b>予定一覧</b>
 
@@ -78,24 +78,27 @@
       </div>
       <div class="list">
         <div class="th"><b>
-            <span>　日付　　　</span>
+            <span>日付</span>
             <span>タイトル</span>
             <span>開始時刻</span>
             <span>終了時刻</span></b>
         </div>
         <div class="td" id="schedule_list">
           <div th:each="group:${groupSchedules}">
-            <span th:text="${group.hizuke}"></span>
-            <span th:text="${group.title}"></span>
-            <span th:text="${group.kaisi}"></span>
-            <span th:text="${group.owari}"></span>
-            <span><a th:href="@{/detail?id=${group.Scheduleid}&groupid=${groupid}}">詳細</a></span>
+            <div class="gyou">
+              <span th:text="${group.hizuke}"></span>
+              <span th:text="${group.title}"></span>
+              <span th:text="${group.kaisi}"></span>
+              <span th:text="${group.owari}"></span>
+              <span><a th:href="@{/detail?id=${group.Scheduleid}&groupid=${groupid}}">詳細</a></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <a th:href="@{/home}"><span class="material-icons">arrow_back</span>グループ選択に戻る</a>
   </div>
-  <a th:href="@{/home}"><span class="material-icons">arrow_back</span>グループ選択に戻る</a>
+
 
 </body>
 
