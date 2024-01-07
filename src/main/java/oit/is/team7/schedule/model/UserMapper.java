@@ -25,4 +25,8 @@ public interface UserMapper {
   // 他ユーザー全員の情報をとってくる
   @Select("select * from users where userid != #{userid}")
   ArrayList<Users> selectOtherByUserid(int userid);
+
+  @Insert("INSERT INTO users (username) VALUES (#{userName})")
+  @Options(useGeneratedKeys = true, keyColumn = "userid")
+  void InsertUser(String userName);
 }

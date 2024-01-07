@@ -4,6 +4,7 @@ import oit.is.team7.schedule.model.Groups;
 import oit.is.team7.schedule.model.GroupsMapper;
 import oit.is.team7.schedule.model.GroupSchedule;
 import oit.is.team7.schedule.model.GroupScheduleMapper;
+import oit.is.team7.schedule.model.AccountMapper;
 import oit.is.team7.schedule.model.Entry;
 import oit.is.team7.schedule.model.EntryMapper;
 import oit.is.team7.schedule.model.Users;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,12 @@ public class ScheduleController {
   UserMapper usermapper;
   @Autowired
   AsyncCalendar asyncCalendar;
+
+  @Autowired
+  AccountMapper accountMapper;
+
+  @Autowired
+  private PasswordEncoder encoder;
 
   @GetMapping("/calendar")
   public String calendar(@RequestParam Integer id, ModelMap model, Principal prin) {
@@ -399,9 +407,16 @@ public class ScheduleController {
     return "redirect:/home";
   }
 
-}
+  @GetMapping("/registerUser")
+  public String registerUserFlag(ModelMap model) {
+    return "registerUser.html";
+  }
 
-/*
- * シンボルUsersをAccountのものに変更する
- * →userMapperをAccountMapperのものに変更する
- */
+  @PostMapping("/registerUser")
+  public String registerUser(@RequestParam String userName, @RequestParam String password, ModelMap model) {
+    accountMapper.InsertAccount(userName, encoder.encode(password));
+    usermapper.InsertUser(userName);
+
+    return "redirect:/";
+  }
+}
