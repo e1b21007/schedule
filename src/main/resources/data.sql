@@ -2,6 +2,7 @@ INSERT INTO Users (userName, userPass) VALUES ('user1','$2y$10$DPZvoBEzZrecXwgAh
 INSERT INTO Users (userName, userPass) VALUES ('user2','$2y$10$SbWZIjsMBTtJ6SaG34GxauRrl7rD7YBKDQihnvmwaoEU/Q0kYy4ae');
 INSERT INTO Users (userName, userPass) VALUES ('user3','$2y$10$bifSQsD6CxLgDfbvmdJi5.MArojBdtczVtBMqwr6F3PaCFoXO7s26');
 INSERT INTO Users (userName, userPass) VALUES ('user4','$2y$10$qBTq8Ku0XpEA.MlHdbgMz.AocTZOc53q1TMb1mUP.vmK73vgkPTkO');
+INSERT INTO Users (userName, userPass) VALUES ('user5','$2y$10$3/HBeTCql3HhnDFTUCbPNu/1RsqZMUqah9jEYifS32sbgcYlpUJEu');
 
 INSERT INTO Groups (GroupName,userid) VALUES ('Group1',1);
 INSERT INTO Groups (GroupName,userid) VALUES ('Group2',2);
