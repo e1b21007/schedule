@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script th:inline="javascript">
     function toggleButton(id) {
       const button = document.getElementById(id);
@@ -39,6 +41,26 @@
         });
         eventSource.close();
       }
+    }
+
+    function validateForm() {
+      var genderOptions = document.getElementsByName('selectedGroup');
+      var isChecked = false;
+
+      for (var i = 0; i < genderOptions.length; i++) {
+        if (genderOptions[i].checked) {
+          isChecked = true;
+          break;
+        }
+      }
+
+      if (!isChecked) {
+        alert('Please select a gender');
+        return false; // フォームの送信を中止
+      }
+
+      // フォームが正常に検証された場合には true を返す
+      return true;
     }
   </script>
 </head>
@@ -72,7 +94,7 @@
 
         <p>グループ名を入力して下さい</p>
         <label>
-          <input type="text" name="newGroupName" />
+          <input type="text" name="newGroupName" required />
         </label>
         <input type="submit" value="変更" />
       </form>
@@ -82,7 +104,7 @@
       <a href="/deleteGroupFlag">グループの削除</a>
     </div>
     <div th:if="${deleteGroupFlag}">
-      <form method="post" th:action="@{/deleteGroup}">
+      <form method="post" th:action="@{/deleteGroup}" onsubmit="return validateForm()">
         <div th:each="group:${AdminGroup}">
           <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
         </div>
