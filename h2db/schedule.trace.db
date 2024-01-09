@@ -13,3 +13,6 @@ SELECT * FROM groupSchedule WHERE GROUPID = ? ORDER BY hizuke, kaisi, scheduleid
 2024-01-09 15:59:08 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNT" not found (this database is empty); SQL statement:
 INSERT INTO account (user_name, user_pass) VALUES (?,?) [42104-214]
+2024-01-09 16:24:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNT" not found (this database is empty); SQL statement:
+select a1_0.account_id,a1_0.user_name,a1_0.user_pass from account a1_0 where a1_0.user_name=? [42104-214]
