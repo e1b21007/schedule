@@ -1,0 +1,15 @@
+2024-01-09 15:58:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "GROUPSCHEDULE" not found (this database is empty); SQL statement:
+SELECT * FROM groupSchedule WHERE GROUPID = ? ORDER BY hizuke, kaisi, scheduleid [42104-214]
+2024-01-09 15:58:54 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "GROUPSCHEDULE" not found (this database is empty); SQL statement:
+SELECT * FROM groupSchedule WHERE GROUPID = ? ORDER BY hizuke, kaisi, scheduleid [42104-214]
+2024-01-09 15:58:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "GROUPSCHEDULE" not found (this database is empty); SQL statement:
+SELECT * FROM groupSchedule WHERE GROUPID = ? ORDER BY hizuke, kaisi, scheduleid [42104-214]
+2024-01-09 15:58:57 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "GROUPSCHEDULE" not found (this database is empty); SQL statement:
+SELECT * FROM groupSchedule WHERE GROUPID = ? ORDER BY hizuke, kaisi, scheduleid [42104-214]
+2024-01-09 15:59:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNT" not found (this database is empty); SQL statement:
+INSERT INTO account (user_name, user_pass) VALUES (?,?) [42104-214]

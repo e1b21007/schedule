@@ -55,7 +55,7 @@
       }
 
       if (!isChecked) {
-        alert('Please select a gender');
+        alert('Please select a group');
         return false; // フォームの送信を中止
       }
 
@@ -116,7 +116,7 @@
     </div>
     <div class="home_button">
 
-      <button onclick="toggleButton('groupEdit')" >グループの変更</button>
+      <button onclick="toggleButton('groupEdit')">グループの変更</button>
       <div id="groupEdit" style="display: none;">
         <form method="post" th:action="@{/home/update/group}">
           <div th:each="group:${AdminGroup}">
