@@ -250,7 +250,7 @@ public class ScheduleController {
   }
 
   @PostMapping("/makenewgroup")
-  public String makenewgroup(Principal prin, ModelMap model, @RequestParam String[] imputUsers, String newGroupName) {
+  public String makenewgroup(Principal prin, ModelMap model, @RequestParam(required = false) String[] imputUsers, String newGroupName) {
     ArrayList<Users> alluser = usermapper.selectAllByUsers();
     Groups newgroup = new Groups();
     newgroup.setGroupname(newGroupName);
@@ -260,9 +260,12 @@ public class ScheduleController {
     int imputuser;
     groupmapper.InsertGroupbyGroup(newgroup);
     int newgroupid = groupmapper.selectMaxGroupByGroupname(newGroupName);
-    for (String stringuser : imputUsers) {
-      imputuser = Integer.parseInt(stringuser);
-      entrymapper.InsertEntry(imputuser, newgroupid);
+    System.out.println("グループ追加");
+    if (imputUsers != null) {
+      for (String stringuser : imputUsers) {
+        imputuser = Integer.parseInt(stringuser);
+        entrymapper.InsertEntry(imputuser, newgroupid);
+      }
     }
     entrymapper.InsertEntry(user.getUserid(), newgroupid);
     ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
@@ -273,7 +276,6 @@ public class ScheduleController {
         entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
       }
     }
-
     model.addAttribute("groups", entryGroup);
     model.addAttribute("allusers", alluser);
 
