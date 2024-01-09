@@ -67,7 +67,7 @@
 
 <body>
   <div class="header">
-    <p class="logo">グループ選択</p>
+    <a th:href="@{/home}" class="logo">Schedule</a>
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
   <div class="wrap">
@@ -100,29 +100,35 @@
       </form>
     </div>
 
-    <div th:if="${deleteGroupFlag == null}">
-      <a href="/deleteGroupFlag">グループの削除</a>
+    </br>
+    <div class="home_button">
+      <div th:if="${deleteGroupFlag == null}">
+        <a href="/deleteGroupFlag" class="button"><span class="material-icons">delete</span>グループの削除</a>
+      </div>
+      <div th:if="${deleteGroupFlag}">
+        <form method="post" th:action="@{/deleteGroup}">
+          <div th:each="group:${AdminGroup}">
+            <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
+          </div>
+          <input type="submit" value="削除" />
+        </form>
+      </div>
     </div>
-    <div th:if="${deleteGroupFlag}">
-      <form method="post" th:action="@{/deleteGroup}" onsubmit="return validateForm()">
-        <div th:each="group:${AdminGroup}">
-          <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
-        </div>
-        <input type="submit" value="削除" />
-      </form>
-    </div>
-    <button onclick="toggleButton('groupEdit')">グループの変更</button>
-    <div id="groupEdit" style="display: none;">
-      <form method="post" th:action="@{/home/update/group}">
-        <div th:each="group:${AdminGroup}">
-          <input type="radio" th:value="${group.groupid}" name="groupid"
-            onclick="getMemberList()" />[[${group.groupname}]]
-        </div>
-        <div th:each="user:${otherusers}" id="groupEntry">
-          <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled />[[${user.userName}]]
-        </div>
-        <input type="submit" value="変更" disabled />
-      </form>
+    <div class="home_button">
+
+      <button onclick="toggleButton('groupEdit')" >グループの変更</button>
+      <div id="groupEdit" style="display: none;">
+        <form method="post" th:action="@{/home/update/group}">
+          <div th:each="group:${AdminGroup}">
+            <input type="radio" th:value="${group.groupid}" name="groupid"
+              onclick="getMemberList()" />[[${group.groupname}]]
+          </div>
+          <div th:each="user:${otherusers}" id="groupEntry">
+            <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled />[[${user.userName}]]
+          </div>
+          <input type="submit" value="変更" disabled />
+        </form>
+      </div>
     </div>
   </div>
 </body>

@@ -1,83 +1,87 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>新規予定</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/css/form-style.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script th:inline="javascript">
-        const groupid = /*[[${group.groupid}]]*/"groupid";
-        window.onload = function () {
-            const sse = new EventSource('/post/update?id=' + groupid);
-            sse.onmessage = function (event) {
-                const schedule_list = JSON.parse(event.data);
-                let schedule_table="<tr><th>日付</th><th>タイトル</th><th>開始時刻</th><th>終了時刻</th></tr>"
-                for (let schedule of schedule_list) {
-                    const bgn_tr = "<tr>";
-                    const end_tr = "</tr>";
-                    const date = "<td>" + schedule.hizuke + "</td>";
-                    const title = "<td><a href=/detail?id=" + schedule.scheduleid + "&groupid=" + schedule.groupid + ">" + schedule.title + "</a></td>";
-                    const start_time = "<td>" + schedule.kaisi + "</td>";
-                    const end_time = "<td>" + schedule.owari + "</td>";
-                    schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + end_tr;
-                }
-                const div = document.getElementById("schedule_list")
-                div.innerHTML = schedule_table;
-            }
+  <title>新規予定</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/css/form-style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script th:inline="javascript">
+    const groupid = /*[[${group.groupid}]]*/"groupid";
+    window.onload = function () {
+      const sse = new EventSource('/post/update?id=' + groupid);
+      sse.onmessage = function (event) {
+        const schedule_list = JSON.parse(event.data);
+        let schedule_table = "<tr><th>日付</th><th>タイトル</th><th>開始時刻</th><th>終了時刻</th></tr>"
+        for (let schedule of schedule_list) {
+          const bgn_tr = "<tr>";
+          const end_tr = "</tr>";
+          const date = "<td>" + schedule.hizuke + "</td>";
+          const title = "<td><a href=/detail?id=" + schedule.scheduleid + "&groupid=" + schedule.groupid + ">" + schedule.title + "</a></td>";
+          const start_time = "<td>" + schedule.kaisi + "</td>";
+          const end_time = "<td>" + schedule.owari + "</td>";
+          schedule_table = schedule_table + bgn_tr + date + title + start_time + end_time + end_tr;
         }
-    </script>
+        const div = document.getElementById("schedule_list")
+        div.innerHTML = schedule_table;
+      }
+    }
+  </script>
 </head>
+
 <body>
-<div class="header">
-    <a th:href="@{/home(id=${group.groupid})}" class="logo">Schedule</a>
+  <div class="header">
+    <a th:href="@{/home}" class="logo">Schedule</a>
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
-</div>
-<div class="wrap">
+  </div>
+  <div class="wrap">
     <div class="main">
-        <div class="container main-content">
-            <form  method="post" th:action="@{/post(id=${group.groupid})}">
-                <h2>予定登録フォーム</h2>
-                <p>[[${group.groupname}]]の予定を追加してください</p>
-                <p>タイトル</p>
-                <label><input type="text" name="title" placeholder="タイトル" required/></label>
-                <p>年月日</p>
-                <label>
-                    <input type="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
-                </label>
-                <p>時間</p>
-                <label>
-                    <input type="time" name="start" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required/> ~
-                    <input type="time" name="end" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required/>
-                </label>
-                <p>内容</p>
-                <label>
-                    <textarea name="content" rows="10" cols="30" placeholder="予定の内容を記入してください。" required></textarea>
-                </label>
-                <input type="submit" value="追加"/>
-            </form>
-        </div>
-        <div class="schedule container">
-            <h2>[[${group.groupname}]]の予定一覧</h2>
-            <table id="schedule_list">
-                <tr>
-                    <th>日付</th>
-                    <th>タイトル</th>
-                    <th>開始時刻</th>
-                    <th>終了時刻</th>
-                </tr>
-                <tr th:each="schedule:${groupSchedules}">
-                    <td th:text="${schedule.hizuke}"></td>
-                    <td><a th:href="@{/detail(id=${schedule.scheduleid},groupid=${schedule.groupid})}">[[${schedule.title}]]</a></td>
-                    <td th:text="${schedule.kaisi}"></td>
-                    <td th:text="${schedule.owari}"></td>
-                </tr>
-            </table>
-        </div>
+      <div class="container main-content">
+        <form method="post" th:action="@{/post(id=${group.groupid})}">
+          <h2>予定登録フォーム</h2>
+          <p>[[${group.groupname}]]の予定を追加してください</p>
+          <p>タイトル</p>
+          <label><input type="text" name="title" placeholder="タイトル" required /></label>
+          <p>年月日</p>
+          <label>
+            <input type="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required />
+          </label>
+          <p>時間</p>
+          <label>
+            <input type="time" name="start" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required /> ~
+            <input type="time" name="end" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required />
+          </label>
+          <p>内容</p>
+          <label>
+            <textarea name="content" rows="10" cols="30" placeholder="予定の内容を記入してください。" required></textarea>
+          </label>
+          <input type="submit" value="追加" />
+        </form>
+      </div>
+      <div class="schedule container">
+        <h2>[[${group.groupname}]]の予定一覧</h2>
+        <table id="schedule_list">
+          <tr>
+            <th>日付</th>
+            <th>タイトル</th>
+            <th>開始時刻</th>
+            <th>終了時刻</th>
+          </tr>
+          <tr th:each="schedule:${groupSchedules}">
+            <td th:text="${schedule.hizuke}"></td>
+            <td><a th:href="@{/detail(id=${schedule.scheduleid},groupid=${schedule.groupid})}">[[${schedule.title}]]</a>
+            </td>
+            <td th:text="${schedule.kaisi}"></td>
+            <td th:text="${schedule.owari}"></td>
+          </tr>
+        </table>
+      </div>
     </div>
     <a th:href="@{/calendar(id=${group.groupid})}"><span class="material-icons">arrow_back</span>カレンダーに戻る</a>
-</div>
+  </div>
 </body>
+
 </html>
