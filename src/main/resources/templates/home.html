@@ -44,18 +44,18 @@
     }
 
     function validateForm() {
-      var genderOptions = document.getElementsByName('selectedGroup');
-      var isChecked = false;
+      const options = document.getElementsByName('selectedGroup');
+      let isChecked = false;
 
-      for (var i = 0; i < genderOptions.length; i++) {
-        if (genderOptions[i].checked) {
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].checked) {
           isChecked = true;
           break;
         }
       }
 
       if (!isChecked) {
-        alert('Please select a gender');
+        alert('グループを選択してください');
         return false; // フォームの送信を中止
       }
 
@@ -106,7 +106,7 @@
         <a href="/deleteGroupFlag" class="button"><span class="material-icons">delete</span>グループの削除</a>
       </div>
       <div th:if="${deleteGroupFlag}">
-        <form method="post" th:action="@{/deleteGroup}">
+        <form method="post" th:action="@{/deleteGroup}" onsubmit="return validateForm()">
           <div th:each="group:${AdminGroup}">
             <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
           </div>
