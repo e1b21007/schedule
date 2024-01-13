@@ -194,12 +194,8 @@ public class ScheduleController {
   @GetMapping("/delete")
   public String deleteYes(@RequestParam Integer id, @RequestParam Integer gid, ModelMap model) {
     this.asyncCalendar.syncDeleteSchedule(id);
-    ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(gid);
 
-    model.addAttribute("groupSchedules", groupSchedules);
-    model.addAttribute("groupid", gid);
-
-    return "calendar.html";
+    return "redirect:/calendar?id=" + gid;
   }
 
   @GetMapping({ "/calendar/update", "/post/update", "/detail/update" })
