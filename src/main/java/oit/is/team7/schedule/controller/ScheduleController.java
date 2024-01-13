@@ -53,9 +53,10 @@ public class ScheduleController {
     }
 
     ArrayList<GroupSchedule> groupSchedules = asyncCalendar.syncShowGroupSchedule(id);
+    Groups group = groupmapper.selectSgroupByGroupid(id);
 
     model.addAttribute("groupSchedules", groupSchedules);
-    model.addAttribute("groupid", id);
+    model.addAttribute("group", group);
 
     return "calendar.html";
   }
@@ -221,34 +222,6 @@ public class ScheduleController {
     return emitter;
   }
 
-  @GetMapping("/newgroup")
-  public String newgroup(Principal prin, ModelMap model) {
-    boolean newgroupflag = true;
-    String username = prin.getName();
-    Users user = usermapper.selectByname(username);
-    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
-    ArrayList<Groups> entryGroup = new ArrayList<>();
-
-    for (Entry entry : entries) {
-      if (entry.getUserid() == user.getUserid()) {
-        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
-        System.out.println(entry.getGroupid());
-      }
-    }
-
-    model.addAttribute("groups", entryGroup);
-    model.addAttribute("newgroupflag", newgroupflag);
-
-    // グループの編集用追加箇所
-    ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
-    AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
-    model.addAttribute("otherusers", otherusers);
-    model.addAttribute("AdminGroup", AdminGroups);
-
-    return "home.html";
-  }
-
   @PostMapping("/makenewgroup")
   public String makenewgroup(Principal prin, ModelMap model, @RequestParam(required = false) String[] imputUsers,
       String newGroupName) {
@@ -302,33 +275,6 @@ public class ScheduleController {
       }
     }
     return false;
-  }
-
-  @GetMapping("/deleteGroupFlag")
-  public String deleteGroupFlag(ModelMap model, Principal prin) {
-    boolean deleteGroupFlag = true;
-    ArrayList<Groups> entryGroup = new ArrayList<>();
-    String username = prin.getName();
-    Users user = usermapper.selectByname(username);
-    ArrayList<Entry> entries = entrymapper.selectEntryByUserid(user.getUserid());
-
-    for (Entry entry : entries) {
-      if (entry.getUserid() == user.getUserid()) {
-        entryGroup.add(groupmapper.selectSgroupByGroupid(entry.getGroupid()));
-        System.out.println(entry.getGroupid());
-      }
-    }
-
-    model.addAttribute("groups", entryGroup);
-    model.addAttribute("deleteGroupFlag", deleteGroupFlag);
-
-    // グループの編集用追加箇所
-    ArrayList<Groups> AdminGroups = new ArrayList<>();
-    ArrayList<Users> otherusers = usermapper.selectOtherByUserid(user.getUserid());
-    AdminGroups = groupmapper.selectAdminSgroup(user.getUserid());
-    model.addAttribute("otherusers", otherusers);
-    model.addAttribute("AdminGroup", AdminGroups);
-    return "home.html";
   }
 
   @PostMapping("/deleteGroup")
