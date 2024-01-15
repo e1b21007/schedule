@@ -5,8 +5,8 @@
 <h2> 目次 </h2>
 
 <ol>
-  <li><a href="./docs/readme#1.md">説明</a></li>
-  <li><a href="./docs/readme#2.md">必要条件</a></li>
+  <li><a href="./docs/readme1.md">説明</a></li>
+  <li><a href="./docs/readme2.md">必要条件</a></li>
   <li><a href="./docs/howtouse.md">使い方</a></li>
   <li><a href="./docs/setup.md">セットアップマニュアル</a>
   <ol>
