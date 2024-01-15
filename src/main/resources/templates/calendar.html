@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/form-style.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script th:inline="javascript">
-    const groupid = /*[[${groupid}]]*/"groupid";
+    const groupid = /*[[${group.groupid}]]*/"groupid";
     window.onload = function () {
       const timeSse = new EventSource('/current_date' + "?id=" + groupid);
       timeSse.onmessage = function (event) {
@@ -32,6 +32,8 @@
         }
         if (content !== "") {
           header = "<h3>24時間以内の予定があります。</h3>"
+        } else {
+          header = "<h3>24時間以内の予定はありません。</h3>"
         }
 
         const reminder_tag = document.getElementById("reminder");
@@ -68,9 +70,9 @@
     <a href="/logout" class="logout-button"><span class="material-icons">logout</span>ログアウト</a>
   </div>
   <div class="main2">
-    <b>予定一覧</b>
+    <h2>[[${group.groupname}]]予定一覧</h2>
 
-    <p><a th:href="@{/post(id=${groupid})}">予定入力</a></p>
+    <p><a th:href="@{/post(id=${group.groupid})}">予定入力</a></p>
   </div>
   <div class="wrap">
     <div class="calendar">
@@ -84,12 +86,12 @@
             <span>終了時刻</span></b>
         </div>
         <div class="td" id="schedule_list">
-          <div th:each="group:${groupSchedules}">
+          <div th:each="schedule:${groupSchedules}">
             <div class="gyou">
-              <span th:text="${group.hizuke}"></span>
-              <span th:text="${group.title}"></span>
-              <span th:text="${group.kaisi}"></span>
-              <span th:text="${group.owari}"></span>
+              <span th:text="${schedule.hizuke}"></span>
+              <span th:text="${schedule.title}"></span>
+              <span th:text="${schedule.kaisi}"></span>
+              <span th:text="${schedule.owari}"></span>
               <span><a th:href="@{/detail?id=${group.Scheduleid}&groupid=${groupid}}">詳細</a></span>
             </div>
           </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="utf-8">
@@ -11,25 +11,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script th:inline="javascript">
-    function toggleButton(id) {
-      const button = document.getElementById(id);
-      if (button.style.display === "none") {
-        button.style.display = "block";
-      } else {
-        button.style.display = "none";
-      }
-    }
-
     function getMemberList() {
-      const groupid = document.querySelector('#groupEdit input[name="groupid"]:checked').value;
+      const groupid = document.querySelector('#editMembersForm input[name="groupid"]:checked').value;
       const url = '/home/update/group?id=' + groupid;
       const eventSource = new EventSource(url);
       console.log("execute getMemberList");
       eventSource.onmessage = function (event) {
         const data = JSON.parse(event.data);
 
-        const allUsers = Array.from(document.querySelectorAll('#groupEdit input[type="checkbox"]'));
-        const button = document.querySelector('#groupEdit [type="submit"]');
+        const allUsers = Array.from(document.querySelectorAll('#editMembersForm input[type="checkbox"]'));
+        const button = document.querySelector('#editMembersForm [type="submit"]');
 
         allUsers.forEach(function (userCheckbox) {
           userCheckbox.disabled = false;
@@ -43,25 +34,61 @@
       }
     }
 
-    function validateForm() {
-      var genderOptions = document.getElementsByName('selectedGroup');
-      var isChecked = false;
+    function removeConfirm() {
+      const options = document.getElementsByName('selectedGroup');
+      let isChecked = false;
 
-      for (var i = 0; i < genderOptions.length; i++) {
-        if (genderOptions[i].checked) {
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].checked) {
           isChecked = true;
           break;
         }
       }
 
       if (!isChecked) {
-        alert('Please select a gender');
+        alert('グループを選択してください');
         return false; // フォームの送信を中止
       }
 
-      // フォームが正常に検証された場合には true を返す
+      if (!window.confirm('本当に削除しますか？')) {
+        return false;
+      }
+
       return true;
     }
+
+    window.onload = function () {
+      const buttons = {
+        createGroupButton: document.getElementById('createGroupForm'),
+        deleteGroupButton: document.getElementById('deleteGroupForm'),
+        editMembersButton: document.getElementById('editMembersForm')
+      };
+
+      Object.keys(buttons).forEach(function (buttonId) {
+        const button = document.getElementById(buttonId);
+        const form = buttons[buttonId];
+
+        button.addEventListener('click', function () {
+          Object.values(buttons).forEach(function (form) {
+            form.style.display = 'none';
+          });
+
+          form.style.display = 'block';
+
+          document.getElementById('noSelectionMessage').style.display = 'none';
+        });
+      });
+
+      // Check if all forms are hidden
+      const allFormsHidden = Object.values(buttons).every(function (form) {
+        return form.style.display === 'none';
+      });
+
+      // If all forms are hidden, show the message
+      if (allFormsHidden) {
+        document.getElementById('noSelectionMessage').style.display = 'block';
+      }
+    };
   </script>
 </head>
 
@@ -72,64 +99,80 @@
   </div>
   <div class="wrap">
     <div class="main_home">
-      <div th:each="group:${groups}">
-        <p class="container group">
+      <p>ようこそ <span sec:authentication="name"></span>さん</p>
+      <h2>グループ一覧</h2>
+      <div class="group_card">
+        <div th:each="group:${groups}">
           <a th:href="@{/calendar(id=${group.groupid})}">
             [[${group.groupname}]]
           </a>
-        </p>
-      </div>
-    </div>
-
-    <div th:if="${newgroupflag == null}">
-      <a href="/newgroup" class="button"><span class="material-icons">newgroup</span>新しくグループを作る</a>
-    </div>
-    <div th:if="${newgroupflag}">
-      <form method="post" th:action="@{/makenewgroup}" class="add_group">
-        <legend>参加させるユーザー</legend>
-        <div th:each="user:${otherusers}">
-          <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}"
-            checked />[[${user.userName}]]
         </div>
-
-        <p>グループ名を入力して下さい</p>
-        <label>
-          <input type="text" name="newGroupName" required />
-        </label>
-        <input type="submit" value="変更" />
-      </form>
-    </div>
-
-    </br>
-    <div class="home_button">
-      <div th:if="${deleteGroupFlag == null}">
-        <a href="/deleteGroupFlag" class="button"><span class="material-icons">delete</span>グループの削除</a>
       </div>
-      <div th:if="${deleteGroupFlag}">
-        <form method="post" th:action="@{/deleteGroup}" onsubmit="return validateForm()">
+    </div>
+    <h2>グループの編集</h2>
+    <div class="group_editor">
+      <div class="group_editor_menu">
+        <ul>
+          <li><button id="createGroupButton"><span class="material-icons">group</span>新しくグループを作る</button></li>
+          <li><button id="deleteGroupButton"><span class="material-icons">delete</span>グループの削除</button></li>
+          <li><button id="editMembersButton"><span class="material-icons">person_add</span>メンバーの変更</button></li>
+        </ul>
+      </div>
+
+      <div id="formContainer" class="group_editor_form">
+        <div id="noSelectionMessage" style="display: none;">メニューが選択されていません</div>
+        <div id="createGroupForm" style="display: none;">
+          <form method="post" th:action="@{/makenewgroup}">
+            <h3>新規グループ登録</h3>
+            <p>グループ名を入力して下さい</p>
+            <label>
+              <input type="text" name="newGroupName" required />
+            </label>
+            <legend>参加させるユーザー</legend>
+            <div th:each="user:${otherusers}">
+              <label>
+                <input type="checkbox" th:id="${user.userid}" name="imputUsers" th:value="${user.userid}"
+                  checked />[[${user.userName}]]
+              </label>
+            </div>
+            <input type="submit" value="変更" />
+          </form>
+        </div>
+        </br>
+        <form method="post" th:action="@{/deleteGroup}" onsubmit="return removeConfirm()" id="deleteGroupForm"
+          style="display: none;">
+          <h3>グループの削除</h3>
+          <p>削除するグループを選んでください</p>
+
           <div th:each="group:${AdminGroup}">
-            <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
+            <label>
+              <input type="radio" th:value="${group.groupid}" name="selectedGroup" />[[${group.groupname}]]
+            </label>
           </div>
           <input type="submit" value="削除" />
         </form>
+        <div id="editMembersForm" style="display: none;">
+          <form method="post" th:action="@{/home/update/group}">
+            <h3>グループメンバー変更</h3>
+            <p>変更するグループを選択してください</p>
+            <div th:each="group:${AdminGroup}">
+              <label>
+                <input type="radio" th:value="${group.groupid}" name="groupid"
+                  onclick="getMemberList()" />[[${group.groupname}]]
+              </label>
+            </div>
+            <p>所属メンバーを選んでください</p>
+            <div th:each="user:${otherusers}" id="groupEntry">
+              <label>
+                <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled />[[${user.userName}]]
+              </label>
+            </div>
+            <input type="submit" value="変更" disabled />
+          </form>
+        </div>
       </div>
     </div>
-    <div class="home_button">
-
-      <button onclick="toggleButton('groupEdit')" >グループの変更</button>
-      <div id="groupEdit" style="display: none;">
-        <form method="post" th:action="@{/home/update/group}">
-          <div th:each="group:${AdminGroup}">
-            <input type="radio" th:value="${group.groupid}" name="groupid"
-              onclick="getMemberList()" />[[${group.groupname}]]
-          </div>
-          <div th:each="user:${otherusers}" id="groupEntry">
-            <input type="checkbox" name="groupusers" th:value="${user.userid}" disabled />[[${user.userName}]]
-          </div>
-          <input type="submit" value="変更" disabled />
-        </form>
-      </div>
-    </div>
+  </div>
   </div>
 </body>
 
