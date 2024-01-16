@@ -6,7 +6,7 @@
 ```
 $ git clone https://github.com/e1b21007/schedule.git
 $ cd schedule/
-$ bash ./gradlew <br>
+$ bash ./gradlew
 $ bash ./gradlew bootrun
 ```
 <h4 id=i4-2> アンインストール時</h4>
